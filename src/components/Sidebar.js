@@ -75,7 +75,7 @@ const Sidebar = ({
             border: "1px solid #e5e7eb",
             borderRadius: "0.5rem",
             boxShadow: "0 4px 24px rgba(0,0,0,0.08)",
-            zIndex: 40,
+            zIndex: 4000,
             padding: "0.5rem 0",
           }}
         >

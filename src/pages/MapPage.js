@@ -52,6 +52,7 @@ const MapPage = () => {
     const [moved] = updated.splice(from, 1);
     updated.splice(to, 0, moved);
     setLayers(updated);
+    console.log(updated)
   };
 
   return (

@@ -5,7 +5,11 @@ const UploadModal = ({ show, onClose }) => {
   if (!show) return null;
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      style={{
+        zIndex: 4000
+      }}
+      >
       <div className="bg-white rounded-lg p-6 w-96 max-w-90vw">
         <h3 className="text-lg font-semibold mb-4">Upload map file</h3>
         <div className="border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">

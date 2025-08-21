@@ -1,36 +1,108 @@
-import React from 'react';
+import React from "react";
+import {
+  MapContainer,
+  TileLayer,
+  Polygon,
+  Circle,
+  CircleMarker,
+  Popup,
+} from "react-leaflet";
+import "leaflet/dist/leaflet.css";
+import L from "leaflet";
 
-const MapVisualization = () => (
-  <div className="w-full h-full bg-white relative">
-    <div
-      className="w-full h-full bg-cover bg-center relative"
-      style={{
-        backgroundImage: `url("data:image/svg+xml,%3Csvg width='800' height='600' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='100%25' height='100%25' fill='%23e8f4f8'/%3E%3Ctext x='50%25' y='50%25' font-family='Arial' font-size='16' fill='%23666' text-anchor='middle' dy='.3em'%3EMap will render here (Leaflet)%3C/text%3E%3C/svg%3E")`
-      }}
-    >
-      <div className="absolute inset-0">
-        <svg width="100%" height="100%" viewBox="0 0 800 600">
-          <path
-            d="M200 150 Q250 120 300 130 Q350 125 400 140 Q450 150 500 180 Q530 200 540 250 Q545 300 530 350 Q520 400 500 430 Q480 460 450 480 Q400 500 350 490 Q300 485 280 460 Q260 440 250 420 Q240 380 230 350 Q220 320 210 290 Q200 260 195 230 Q190 200 200 150 Z"
-            fill="rgba(34, 139, 34, 0.3)"
-            stroke="rgba(34, 139, 34, 0.6)"
-            strokeWidth="2"
-          />
-          <circle cx="180" cy="300" r="30" fill="rgba(65, 105, 225, 0.4)" />
-          <circle cx="450" cy="200" r="20" fill="rgba(65, 105, 225, 0.4)" />
-          <circle cx="380" cy="350" r="25" fill="rgba(65, 105, 225, 0.4)" />
-          <circle cx="300" cy="200" r="40" fill="rgba(34, 139, 34, 0.5)" />
-          <circle cx="420" cy="280" r="35" fill="rgba(34, 139, 34, 0.5)" />
-          <circle cx="250" cy="220" r="3" fill="#ff4444" />
-          <text x="255" y="218" fontSize="10" fill="#333">Delhi</text>
-          <circle cx="150" cy="350" r="3" fill="#ff4444" />
-          <text x="155" y="348" fontSize="10" fill="#333">Mumbai</text>
-          <circle cx="450" cy="420" r="3" fill="#ff4444" />
-          <text x="455" y="418" fontSize="10" fill="#333">Chennai</text>
-        </svg>
-      </div>
+// Fix Leaflet default marker icons
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
+  iconUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
+  shadowUrl:
+    "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+});
+
+// Helper: normalize value (0–100) → opacity (0.2–1)
+const getOpacity = (value) => {
+  const minOpacity = 0.2;
+  const maxOpacity = 1;
+  return Math.max(minOpacity, Math.min(maxOpacity, value / 100));
+};
+
+const MapVisualization = () => {
+  // Polygon example near Delhi
+  const polygonCoords = [
+    [28.70, 77.10],
+    [28.80, 77.20],
+    [28.75, 77.35],
+    [28.60, 77.25],
+  ];
+
+  // Circle locations (blue)
+  const circleLocations = [
+    { name: "Delhi", coords: [28.6139, 77.209] },
+    { name: "Mumbai", coords: [19.076, 72.8777] },
+    { name: "Chennai", coords: [13.0827, 80.2707] },
+  ];
+
+  // Intensity data (opacity-based)
+  const intensityPoints = [
+    { name: "Point A", coords: [25.3, 82.9], value: 90 },
+    { name: "Point B", coords: [22.6, 88.4], value: 60 },
+    { name: "Point C", coords: [12.9, 77.6], value: 25 },
+    { name: "Point D", coords: [26.8, 75.8], value: 10 },
+  ];
+
+  return (
+    <div className="w-full h-full relative">
+      <MapContainer
+        center={[20.5937, 78.9629]}
+        zoom={5}
+        className="w-full h-full"
+      >
+        {/* Base Layer */}
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+
+        {/* 1. Polygon Area */}
+        <Polygon
+          positions={polygonCoords}
+          pathOptions={{ color: "green", fillOpacity: 0.3 }}
+        />
+
+        {/* 2. Blue Circles for Cities */}
+        {circleLocations.map((loc, i) => (
+          <Circle
+            key={i}
+            center={loc.coords}
+            radius={30000}
+            pathOptions={{ color: "blue", fillOpacity: 0.4 }}
+          >
+            <Popup>{loc.name}</Popup>
+          </Circle>
+        ))}
+
+        {/* 3. Intensity Circles (opacity = intensity) */}
+        {intensityPoints.map((point, i) => (
+          <CircleMarker
+            key={i}
+            center={point.coords}
+            radius={12} // fixed size
+            pathOptions={{
+              color: "red",
+              fillColor: "red",
+              fillOpacity: getOpacity(point.value),
+            }}
+          >
+            <Popup>
+              {point.name} - Value: {point.value}
+            </Popup>
+          </CircleMarker>
+        ))}
+      </MapContainer>
     </div>
-  </div>
-);
+  );
+};
 
 export default MapVisualization;
