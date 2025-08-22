@@ -35,3 +35,45 @@ body {
   background: rgba(0, 128, 128, 0.12);
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.12);
 }
+
+.slider-green {
+  height: 2px;
+  accent-color: #6b7280; /* Tailwind gray-500 */
+}
+
+/* WebKit (Chrome, Safari, Edge) */
+.slider-green::-webkit-slider-thumb {
+  -webkit-appearance: none; /* reset default */
+  appearance: none;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #6b7280; /* gray */
+  cursor: pointer;
+  border: none;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  margin-top: -3px; /* align with track */
+}
+
+/* Firefox */
+.slider-green::-moz-range-thumb {
+  -moz-appearance: none;
+  appearance: none;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #6b7280;
+  cursor: pointer;
+  border: none;
+}
+
+/* IE / old Edge */
+.slider-green::-ms-thumb {
+  appearance: none;
+  width: 3%;
+  height: 3px;
+  border-radius: 50%;
+  background: #6b7280;
+  cursor: pointer;
+  border: none;
+}

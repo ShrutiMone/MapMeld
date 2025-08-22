@@ -52,7 +52,13 @@ const MapPage = () => {
     const [moved] = updated.splice(from, 1);
     updated.splice(to, 0, moved);
     setLayers(updated);
-    console.log(updated)
+    console.log(updated);
+  };
+
+  const setLayerOpacity = (id, opacity) => {
+    setLayers((layers) =>
+      layers.map((layer) => (layer.id === id ? { ...layer, opacity } : layer))
+    );
   };
 
   return (
@@ -117,6 +123,7 @@ const MapPage = () => {
           toggleLayer={toggleLayer}
           removeLayer={removeLayer}
           moveLayer={moveLayer}
+          setLayerOpacity={setLayerOpacity}
         />
 
         <UploadModal
