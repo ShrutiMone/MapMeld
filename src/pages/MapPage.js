@@ -1,4 +1,3 @@
-// MapPage.js
 import React, { useState } from "react";
 import { Map, Plus } from "lucide-react";
 import UploadModal from "../components/UploadModal";
@@ -6,22 +5,14 @@ import MapVisualization from "../components/MapVisualization";
 import Sidebar from "../components/Sidebar";
 import MapControlsSidebar from "../components/MapControlsSidebar";
 import Footer from "../components/Footer";
+import { layersData, builtInMapsData } from "../data/layersData"; // ⬅️ moved here
 
-const MapPage = ({ 
-  initialLayers = [], 
-  builtInMaps = [], 
-  onLayersChange 
-}) => {
+const MapPage = () => {
   const [showBuiltInDropdown, setShowBuiltInDropdown] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
-  const [layers, setLayers] = useState(initialLayers);
+  const [layers, setLayers] = useState(layersData); // ⬅️ initialized here
 
-  const updateLayers = (newLayers) => {
-    setLayers(newLayers);
-    if (onLayersChange) {
-      onLayersChange(newLayers);
-    }
-  };
+  const updateLayers = (newLayers) => setLayers(newLayers);
 
   const toggleLayer = (id) => {
     updateLayers(
@@ -32,7 +23,7 @@ const MapPage = ({
   };
 
   const addBuiltInMap = (mapName) => {
-    const mapConfig = builtInMaps.find(map => map.name === mapName);
+    const mapConfig = builtInMapsData.find(map => map.name === mapName);
     if (!mapConfig) return;
     
     const newLayer = {
@@ -76,7 +67,7 @@ const MapPage = ({
           layers={layers}
           toggleLayer={toggleLayer}
           addBuiltInMap={addBuiltInMap}
-          builtInMaps={builtInMaps}
+          builtInMaps={builtInMapsData} // ⬅️ now local
           removeLayer={removeLayer}
         />
 
@@ -87,7 +78,7 @@ const MapPage = ({
                 <h3 className="font-medium text-gray-800">Built-in Maps</h3>
               </div>
               <div className="max-h-64 overflow-y-auto">
-                {builtInMaps.map((map, index) => (
+                {builtInMapsData.map((map, index) => (
                   <button
                     key={index}
                     onClick={() => addBuiltInMap(map.name)}
@@ -107,17 +98,7 @@ const MapPage = ({
           )}
 
           <div className="h-full bg-gray-300 flex items-center justify-center">
-            {layers.filter((l) => l.visible).length === 0 ? (
-              <div className="text-center text-gray-600">
-                <Map className="w-16 h-16 mx-auto mb-4 text-gray-400" />
-                <p className="text-lg">overlaid maps</p>
-                <p className="text-sm mt-2">
-                  Add maps from the sidebar to get started
-                </p>
-              </div>
-            ) : (
-              <MapVisualization layers={layers} />
-            )}
+            <MapVisualization layers={layers} />
           </div>
         </div>
 

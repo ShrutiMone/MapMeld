@@ -33,8 +33,11 @@ const getOpacity = (value) => {
 };
 
 const MapVisualization = ({ layers }) => {
+
+  console.log("Layers : ", layers)
+
   return (
-    <div className="w-full h-full relative">
+      <div className="w-full h-full relative">
       <MapContainer
         center={[20.5937, 78.9629]}
         zoom={5}

@@ -1,29 +1,17 @@
-import React, { useState } from "react";
+import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Header from "./components/Header";
 import MapPage from "./pages/MapPage";
 import HowToUsePage from "./pages/HowToUsePage";
 import AboutPage from "./pages/AboutPage";
-import { layersData, builtInMapsData } from "./data/layersData"; // <-- import here
 
 function App() {
-  const [layers, setLayers] = useState(layersData); // <-- use imported data
-
   return (
     <Router>
       <div className="min-h-screen bg-green-100">
         <Header />
         <Routes>
-          <Route
-            path="/"
-            element={
-              <MapPage
-                initialLayers={layers}
-                builtInMaps={builtInMapsData} // <-- use imported data
-                onLayersChange={setLayers}
-              />
-            }
-          />
+          <Route path="/" element={<MapPage />} />
           <Route path="/howto" element={<HowToUsePage />} />
           <Route path="/about" element={<AboutPage />} />
         </Routes>
