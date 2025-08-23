@@ -1,3 +1,4 @@
+// MapPage.js
 import React, { useState } from "react";
 import { Map, Plus } from "lucide-react";
 import UploadModal from "../components/UploadModal";
@@ -6,25 +7,24 @@ import Sidebar from "../components/Sidebar";
 import MapControlsSidebar from "../components/MapControlsSidebar";
 import Footer from "../components/Footer";
 
-const MapPage = () => {
+const MapPage = ({ 
+  initialLayers = [], 
+  builtInMaps = [], 
+  onLayersChange 
+}) => {
   const [showBuiltInDropdown, setShowBuiltInDropdown] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
-  const [layers, setLayers] = useState([
-  { id: 1, name: "Forest", visible: true, type: "built-in", opacity: 100 },
-  { id: 2, name: "Water", visible: true, type: "built-in", opacity: 100 },
-  { id: 3, name: "Bird A", visible: true, type: "gbif", opacity: 100 },
-  { id: 4, name: "Bird B", visible: true, type: "gbif", opacity: 100 },
-]);
+  const [layers, setLayers] = useState(initialLayers);
 
-  const builtInMaps = [
-    { name: "Forests", category: "Environment" },
-    { name: "Water sources", category: "Hydrology" },
-    { name: "Land area", category: "Geography" },
-    { name: "Deserts", category: "Climate" },
-  ];
+  const updateLayers = (newLayers) => {
+    setLayers(newLayers);
+    if (onLayersChange) {
+      onLayersChange(newLayers);
+    }
+  };
 
   const toggleLayer = (id) => {
-    setLayers(
+    updateLayers(
       layers.map((layer) =>
         layer.id === id ? { ...layer, visible: !layer.visible } : layer
       )
@@ -32,18 +32,24 @@ const MapPage = () => {
   };
 
   const addBuiltInMap = (mapName) => {
+    const mapConfig = builtInMaps.find(map => map.name === mapName);
+    if (!mapConfig) return;
+    
     const newLayer = {
       id: Date.now(),
       name: mapName,
       visible: true,
-      type: "built-in",
+      type: mapConfig.type,
+      data: mapConfig.data,
+      opacity: 100
     };
-    setLayers([newLayer, ...layers]); // Add to top
+    
+    updateLayers([newLayer, ...layers]);
     setShowBuiltInDropdown(false);
   };
 
   const removeLayer = (id) => {
-    setLayers(layers.filter((layer) => layer.id !== id));
+    updateLayers(layers.filter((layer) => layer.id !== id));
   };
 
   const moveLayer = (from, to) => {
@@ -51,14 +57,13 @@ const MapPage = () => {
     const updated = [...layers];
     const [moved] = updated.splice(from, 1);
     updated.splice(to, 0, moved);
-    setLayers(updated);
-    console.log(updated);
+    updateLayers(updated);
   };
 
   const setLayerOpacity = (id, opacity) => {
-    setLayers(layers.map(layer => 
-      layer.id === id ? { ...layer, opacity } : layer
-    ));
+    updateLayers(
+      layers.map((layer) => (layer.id === id ? { ...layer, opacity } : layer))
+    );
   };
 
   return (
@@ -75,7 +80,6 @@ const MapPage = () => {
           removeLayer={removeLayer}
         />
 
-        {/* Main Map Area */}
         <div className="flex-1 relative">
           {showBuiltInDropdown && (
             <div className="absolute top-0 left-0 w-64 bg-white border border-gray-300 rounded shadow-lg z-30 m-4">
@@ -112,13 +116,11 @@ const MapPage = () => {
                 </p>
               </div>
             ) : (
-              // In MapPage component, replace the MapVisualization usage:
               <MapVisualization layers={layers} />
             )}
           </div>
         </div>
 
-        {/* Right sidebar for map controls */}
         <MapControlsSidebar
           layers={layers}
           toggleLayer={toggleLayer}
