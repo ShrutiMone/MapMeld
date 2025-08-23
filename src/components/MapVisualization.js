@@ -28,29 +28,30 @@ const getOpacity = (value) => {
   return Math.max(minOpacity, Math.min(maxOpacity, value / 100));
 };
 
-const MapVisualization = () => {
-  // Polygon example near Delhi
-  const polygonCoords = [
-    [28.70, 77.10],
-    [28.80, 77.20],
-    [28.75, 77.35],
-    [28.60, 77.25],
-  ];
-
-  // Circle locations (blue)
-  const circleLocations = [
-    { name: "Delhi", coords: [28.6139, 77.209] },
-    { name: "Mumbai", coords: [19.076, 72.8777] },
-    { name: "Chennai", coords: [13.0827, 80.2707] },
-  ];
-
-  // Intensity data (opacity-based)
-  const intensityPoints = [
-    { name: "Point A", coords: [25.3, 82.9], value: 90 },
-    { name: "Point B", coords: [22.6, 88.4], value: 60 },
-    { name: "Point C", coords: [12.9, 77.6], value: 25 },
-    { name: "Point D", coords: [26.8, 75.8], value: 10 },
-  ];
+const MapVisualization = ({ layers }) => {
+  // Remove hardcoded data and use layers prop instead
+  const layerDataMap = {
+    "Forest": {
+      type: "polygon",
+      positions: [[28.70, 77.10], [28.80, 77.20], [28.75, 77.35], [28.60, 77.25]],
+      style: { color: 'green' }
+    },
+    "Water": {
+      type: "polygon",
+      positions: [[28.65, 77.15], [28.75, 77.25], [28.70, 77.40], [28.55, 77.30]],
+      style: { color: 'blue' }
+    },
+    "Bird A": {
+      type: "circleMarker",
+      positions: [[25.3, 82.9], [22.6, 88.4]],
+      style: { color: 'red' }
+    },
+    "Bird B": {
+      type: "circleMarker",
+      positions: [[12.9, 77.6], [26.8, 75.8]],
+      style: { color: 'orange' }
+    }
+  };
 
   return (
     <div className="w-full h-full relative">
@@ -59,47 +60,49 @@ const MapVisualization = () => {
         zoom={5}
         className="w-full h-full"
       >
-        {/* Base Layer */}
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        {/* 1. Polygon Area */}
-        <Polygon
-          positions={polygonCoords}
-          pathOptions={{ color: "green", fillOpacity: 0.3 }}
-        />
+        {layers.filter(layer => layer.visible).map(layer => {
+          const data = layerDataMap[layer.name];
+          if (!data) return null;
 
-        {/* 2. Blue Circles for Cities */}
-        {circleLocations.map((loc, i) => (
-          <Circle
-            key={i}
-            center={loc.coords}
-            radius={30000}
-            pathOptions={{ color: "blue", fillOpacity: 0.4 }}
-          >
-            <Popup>{loc.name}</Popup>
-          </Circle>
-        ))}
+          const opacity = layer.opacity !== undefined ? layer.opacity / 100 : 1;
 
-        {/* 3. Intensity Circles (opacity = intensity) */}
-        {intensityPoints.map((point, i) => (
-          <CircleMarker
-            key={i}
-            center={point.coords}
-            radius={12} // fixed size
-            pathOptions={{
-              color: "red",
-              fillColor: "red",
-              fillOpacity: getOpacity(point.value),
-            }}
-          >
-            <Popup>
-              {point.name} - Value: {point.value}
-            </Popup>
-          </CircleMarker>
-        ))}
+          switch (data.type) {
+            case "polygon":
+              return (
+                <Polygon
+                  key={layer.id}
+                  positions={data.positions}
+                  pathOptions={{
+                    ...data.style,
+                    fillOpacity: 0.3 * opacity,
+                    opacity: opacity
+                  }}
+                />
+              );
+            case "circleMarker":
+              return data.positions.map((position, index) => (
+                <CircleMarker
+                  key={`${layer.id}-${index}`}
+                  center={position}
+                  radius={8}
+                  pathOptions={{
+                    ...data.style,
+                    fillOpacity: 0.7 * opacity,
+                    opacity: opacity
+                  }}
+                >
+                  <Popup>{layer.name} - Point {index + 1}</Popup>
+                </CircleMarker>
+              ));
+            default:
+              return null;
+          }
+        })}
       </MapContainer>
     </div>
   );

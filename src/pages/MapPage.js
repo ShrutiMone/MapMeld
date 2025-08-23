@@ -10,11 +10,11 @@ const MapPage = () => {
   const [showBuiltInDropdown, setShowBuiltInDropdown] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [layers, setLayers] = useState([
-    { id: 1, name: "Forest", visible: true, type: "built-in" },
-    { id: 2, name: "Water", visible: true, type: "built-in" },
-    { id: 3, name: "Bird A", visible: true, type: "gbif" },
-    { id: 4, name: "Bird B", visible: true, type: "gbif" },
-  ]);
+  { id: 1, name: "Forest", visible: true, type: "built-in", opacity: 100 },
+  { id: 2, name: "Water", visible: true, type: "built-in", opacity: 100 },
+  { id: 3, name: "Bird A", visible: true, type: "gbif", opacity: 100 },
+  { id: 4, name: "Bird B", visible: true, type: "gbif", opacity: 100 },
+]);
 
   const builtInMaps = [
     { name: "Forests", category: "Environment" },
@@ -56,9 +56,9 @@ const MapPage = () => {
   };
 
   const setLayerOpacity = (id, opacity) => {
-    setLayers((layers) =>
-      layers.map((layer) => (layer.id === id ? { ...layer, opacity } : layer))
-    );
+    setLayers(layers.map(layer => 
+      layer.id === id ? { ...layer, opacity } : layer
+    ));
   };
 
   return (
@@ -112,7 +112,8 @@ const MapPage = () => {
                 </p>
               </div>
             ) : (
-              <MapVisualization />
+              // In MapPage component, replace the MapVisualization usage:
+              <MapVisualization layers={layers} />
             )}
           </div>
         </div>
