@@ -88,6 +88,91 @@ const MapControlsSidebar = ({
     // eslint-disable-next-line
   }, [resizing.current]);
 
+  const LayerIcon = ({ layer }) => {
+    const color = layer.data?.style?.color || "gray";
+
+    switch (layer.type) {
+      case "polygon":
+      case "rectangle":
+        return (
+          <svg width="16" height="16" className="mr-2 flex-shrink-0">
+            <polygon
+              points="4,12 8,4 12,12"
+              fill={color}
+              fillOpacity={layer.data?.style?.fillOpacity ?? 0.3}
+              stroke={color}
+              strokeWidth="2"
+            />
+          </svg>
+        );
+      case "polyline":
+        return (
+          <svg width="16" height="16" className="mr-2 flex-shrink-0">
+            <polyline
+              points="2,12 6,4 10,10 14,6"
+              fill="none"
+              stroke={color}
+              strokeWidth={layer.data?.style?.weight ?? 2}
+            />
+          </svg>
+        );
+      case "circle":
+      case "circleMarker":
+        return (
+          <svg width="16" height="16" className="mr-2 flex-shrink-0">
+            <circle
+              cx="8"
+              cy="8"
+              r="6"
+              fill={color}
+              fillOpacity={layer.data?.style?.fillOpacity ?? 0.3}
+              stroke={color}
+              strokeWidth="2"
+            />
+          </svg>
+        );
+      case "marker":
+        return (
+          <svg width="16" height="16" className="mr-2 flex-shrink-0">
+            <circle
+              cx="8"
+              cy="8"
+              r="4"
+              fill={color}
+              stroke={color}
+              strokeWidth="2"
+            />
+          </svg>
+        );
+      case "heatmap":
+        return (
+          <svg width="16" height="16" className="mr-2 flex-shrink-0">
+            <rect
+              x="2"
+              y="2"
+              width="12"
+              height="12"
+              fill={`url(#heatmapGradient-${layer.id})`}
+            />
+            <defs>
+              <linearGradient
+                id={`heatmapGradient-${layer.id}`}
+                x1="0"
+                y1="0"
+                x2="1"
+                y2="1"
+              >
+                <stop offset="0%" stopColor="red" stopOpacity="0.8" />
+                <stop offset="100%" stopColor="yellow" stopOpacity="0.4" />
+              </linearGradient>
+            </defs>
+          </svg>
+        );
+      default:
+        return null;
+    }
+  };
+
   return (
     <div
       ref={sidebarRef}
@@ -193,9 +278,13 @@ const MapControlsSidebar = ({
                       >
                         {/* Layer row */}
                         <div className="flex items-center justify-between w-full">
-                          <span className="text-sm text-gray-600 min-w-0 truncate">
-                            {layer.name}
-                          </span>
+                          <div className="flex items-center min-w-0">
+                            <LayerIcon layer={layer} />
+                            <span className="text-sm text-gray-600 truncate">
+                              {layer.name}
+                            </span>
+                          </div>
+
                           <div className="flex items-center space-x-1">
                             {/* Drag handle */}
                             <span
@@ -270,9 +359,7 @@ const MapControlsSidebar = ({
                             className="w-12 px-1 py-0.5 border border-gray-300 rounded text-center text-xs"
                             style={{ height: "18px" }}
                           />
-                          <span className="text-xs text-gray-400">
-                            %
-                          </span>
+                          <span className="text-xs text-gray-400">%</span>
                         </div>
                       </div>
                     )}
