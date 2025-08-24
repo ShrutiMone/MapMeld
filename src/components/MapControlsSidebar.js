@@ -215,55 +215,6 @@ const MapControlsSidebar = ({
         title="Drag to resize sidebar"
       />
 
-      {/* Overlay Settings section removed */}
-      {/* {showOverlaySettings && (
-        <div className="border-b border-gray-200 bg-gray-200 p-4">
-          <h4 className="text-base font-semibold text-gray-700 mb-2">
-            Opacity Settings
-          </h4>
-          <div className="space-y-4">
-            {layers.map((layer) => (
-              <div
-                key={layer.id}
-                className="px-1 flex items-center w-full min-w-0"
-              >
-                <span className="text-sm text-gray-700 flex-shrink-0 w-24 truncate">
-                  {layer.name}
-                </span>
-                <input
-                  type="range"
-                  min={0}
-                  max={100}
-                  value={layer.opacity ?? 100}
-                  onChange={(e) =>
-                    setLayerOpacity(layer.id, Number(e.target.value))
-                  }
-                  className="mx-3 flex-1 slider-green"
-                  style={{ minWidth: 0 }}
-                />
-                <input
-                  type="number"
-                  min={0}
-                  max={100}
-                  value={layer.opacity ?? 100}
-                  onChange={(e) => {
-                    let val = Number(e.target.value);
-                    if (val < 0) val = 0;
-                    if (val > 100) val = 100;
-                    setLayerOpacity(layer.id, val);
-                  }}
-                  className="w-14 px-1 py-0.5 border border-gray-300 rounded text-center text-sm ml-2"
-                  style={{ flexShrink: 0 }}
-                />
-                <span className="ml-2 text-xs text-gray-500 flex-shrink-0">
-                  %
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      )} */}
-
       {/* Layers fill the rest */}
       <div className="p-3 flex-1 overflow-y-auto min-w-0">
         <h4 className="text-base font-medium text-gray-700 mb-2">Layers</h4>
@@ -387,7 +338,7 @@ const MapControlsSidebar = ({
         </DragDropContext>
       </div>
       {/* Export button at the bottom */}
-      <div className="p-4 border-t border-gray-200 sticky bottom-0 bg-gray-100">
+      <div className="p-4 border-t border-gray-200 sticky bottom-0 bg-gray-100 mt-auto">
         <button
           className="w-full py-2 px-4 rounded bg-green-600 hover:bg-green-700 text-white font-semibold flex items-center justify-center space-x-2 transition"
           onClick={() => alert("Export functionality coming soon!")}

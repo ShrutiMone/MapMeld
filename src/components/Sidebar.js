@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from "react";
 import { Eye, EyeOff, Plus, ChevronDown, ChevronUp, Minus } from "lucide-react";
 import GBIFSpeciesPopup from "./GBIFSpeciesPopup"; // <-- import
+import LatLongInputPopup from "./LatLongInputPopup";
 
 const SIDEBAR_WIDTH = 176;
 
@@ -12,12 +13,14 @@ const Sidebar = ({
   builtInMaps,
   removeLayer,
   addGBIFLayer, // <-- add prop
+  addCustomLayer,
 }) => {
   const [showOptions, setShowOptions] = React.useState(false);
   const [showBuiltInList, setShowBuiltInList] = React.useState(false);
   const [showGBIFPopup, setShowGBIFPopup] = React.useState(false); // <-- state
   const addMapDropdownRef = useRef(null);
   const addMapBtnRef = useRef(null);
+  const [showLatLongPopup, setShowLatLongPopup] = React.useState(false);
 
   // Hide add map dropdown when clicking outside
   useEffect(() => {
@@ -51,10 +54,24 @@ const Sidebar = ({
           <span>Add a map</span>
           <Plus className="w-4 h-4" />
         </button>
-        <button className={optionStyle}>
-          <span>Lat-long points</span>
+        <button
+          className={optionStyle}
+          onClick={() => setShowLatLongPopup(true)}
+        >
+          <span>Custom draw</span>
           <Plus className="w-4 h-4" />
         </button>
+
+        {showLatLongPopup && (
+          <LatLongInputPopup
+            onClose={() => setShowLatLongPopup(false)}
+            onAddLayer={(newLayer) => {
+              console.log("Custom Layer:", newLayer);
+              addCustomLayer(newLayer);
+            }}
+          />
+        )}
+
         <button
           className={optionStyle}
           onClick={() => setShowGBIFPopup(true)} // <-- open popup

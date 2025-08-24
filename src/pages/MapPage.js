@@ -38,6 +38,10 @@ const MapPage = () => {
     setLayers((prev) => [newLayer, ...prev]);
   };
 
+  const addCustomLayer = (layer) => {
+    setLayers((prev) => [layer, ...prev]);
+  };
+
   const updateLayers = (newLayers) => setLayers(newLayers);
 
   const toggleLayer = (id) => {
@@ -95,6 +99,7 @@ const MapPage = () => {
           setShowUploadModal={setShowUploadModal}
           addBuiltInMap={addBuiltInMap}
           setShowGBIFPopup={setShowGBIFPopup}
+          addCustomLayer={addCustomLayer}
         />
         <div className="flex-1 relative">
           {showBuiltInDropdown && (
