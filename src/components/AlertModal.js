@@ -1,21 +1,43 @@
-const AlertModal = ({ show, content, okText, onClose }) => {
-  if (!show) return null;
+import { useEffect } from "react";
+
+const AlertModal = ({ show, content, onClose }) => {
+  useEffect(() => {
+    if (show) {
+      const modalEl = document.getElementById("exampleModal");
+      if (modalEl) {
+        const modal = new window.bootstrap.Modal(modalEl);
+        modal.show();
+      }
+    }
+  }, [show]);
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-30 z-50">
-      <div className="bg-white rounded-lg shadow-lg p-6 w-80">
-        <p className="mb-4">{content}</p>
-        <div className="flex justify-end">
-          <button
-            onClick={onClose}
-            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
-          >
-            {okText}
-          </button>
+    <div
+      className="modal fade"
+      id="exampleModal"
+      tabIndex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div className="modal-dialog">
+        <div className="modal-content">
+          <div className="modal-body">{content}</div>
+          <div className="modal-footer">
+            <button
+              type="button"
+              className="btn btn-secondary"
+              data-bs-dismiss="modal"
+              onClick={onClose}
+            >
+              Close
+            </button>
+            <button type="button" className="btn btn-primary" onClick={onClose}>
+              OK
+            </button>
+          </div>
         </div>
       </div>
     </div>
   );
 };
-
 export default AlertModal;

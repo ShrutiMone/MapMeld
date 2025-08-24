@@ -127,7 +127,7 @@ export const builtInMapsData = [
     name: "Forest Cover",
     type: "tile", // could also be polygon/polyline if you have geoJSON
     data: {
-      url: "https://your-tile-server.com/india-forest/{z}/{x}/{y}.png",
+      url: "https://your-tile-server.com/india-forest/{z}/{x}/{y}.png", // add correct url here
       attribution: "© Forest Data",
     },
   },
@@ -135,7 +135,7 @@ export const builtInMapsData = [
     name: "India Water Sources",
     type: "tile",
     data: {
-      url: "https://your-tile-server.com/india-water/{z}/{x}/{y}.png",
+      url: "https://your-tile-server.com/india-water/{z}/{x}/{y}.png", // add correct url here
       attribution: "© Water Sources Data",
     },
   }

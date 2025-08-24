@@ -6,18 +6,20 @@ import Sidebar from "../components/Sidebar";
 import MapControlsSidebar from "../components/MapControlsSidebar";
 import GBIFSpeciesPopup from "../components/GBIFSpeciesPopup";
 import { layersData, builtInMapsData } from "../data/layersData";
+import AlertModal from "../components/AlertModal";
 
 const MapPage = () => {
   const [showBuiltInDropdown, setShowBuiltInDropdown] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showGBIFPopup, setShowGBIFPopup] = useState(false);
+  const [showAlert, setShowAlert] = useState(false);
 
   const [layers, setLayers] = useState(layersData);
 
   // Add GBIF layer using v2 tile API
   const addGBIFLayer = async (species) => {
     if (!species?.key) {
-      alert("No taxonKey found for this species.");
+      setShowAlert(true);
       return;
     }
 
@@ -145,6 +147,11 @@ const MapPage = () => {
         onClose={() => setShowUploadModal(false)}
       />
 
+      <AlertModal
+        show={showAlert}
+        content="No taxonKey found for this species."
+        onClose={() => setShowAlert(false)}
+      />
     </div>
   );
 };

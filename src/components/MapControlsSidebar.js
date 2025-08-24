@@ -1,6 +1,7 @@
 import React, { useRef, useState } from "react";
 import { Eye, EyeOff, Minus, Download } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
+import AlertModal from "./AlertModal";
 
 const DEFAULT_WIDTH = 280;
 const MIN_WIDTH = 230;
@@ -14,6 +15,8 @@ const MapControlsSidebar = ({
   setLayerOpacity,
 }) => {
   const [sidebarWidth, setSidebarWidth] = useState(DEFAULT_WIDTH);
+  const [showAlert, setShowAlert] = useState(false);
+
   const resizing = useRef(false);
   const sidebarRef = useRef(null);
 
@@ -341,12 +344,17 @@ const MapControlsSidebar = ({
       <div className="p-4 border-t border-gray-200 sticky bottom-0 bg-gray-100 mt-auto">
         <button
           className="w-full py-2 px-4 rounded bg-green-600 hover:bg-green-700 text-white font-semibold flex items-center justify-center space-x-2 transition"
-          onClick={() => alert("Export functionality coming soon!")}
+          onClick={() => setShowAlert(true)}
         >
           <Download className="w-4 h-4" />
           <span>Export</span>
         </button>
       </div>
+      <AlertModal
+            show={showAlert}
+            content="Export functionality coming soon!"
+            onClose={() => setShowAlert(false)}
+          />
     </div>
   );
 };
