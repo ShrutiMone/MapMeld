@@ -1,10 +1,14 @@
 import React, { useState } from "react";
+// import AlertModal from "./AlertModal";
 
 const LatLongInputPopup = ({ onClose, onAddLayer }) => {
   const [layerName, setLayerName] = useState("Custom Layer");
   const [layerType, setLayerType] = useState("marker"); // "marker" or "polygon"
   const [color, setColor] = useState("#ff0000");
   const [coords, setCoords] = useState([{ lat: "", lng: "" }]);
+  // const [showModal, setShowModal] = useState(false);
+  // const [alertContent, setAlertContent] = useState("");
+  // const [showAlert, setShowAlert] = useState(false);
 
   const handleCoordChange = (index, field, value) => {
     const updated = [...coords];
@@ -28,6 +32,8 @@ const LatLongInputPopup = ({ onClose, onAddLayer }) => {
 
     if (validCoords.length === 0) {
       alert("Please enter at least one valid coordinate.");
+      // setAlertContent("Please enter at least one valid coordinate.");
+      // setShowAlert(true);
       return;
     }
 
@@ -49,7 +55,7 @@ const LatLongInputPopup = ({ onClose, onAddLayer }) => {
 
   return (
     <div
-      className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center"
+      className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center"
       style={{ zIndex: 9999 }}
     >
       <div className="bg-white p-6 rounded-lg shadow-lg w-96 relative">
@@ -133,6 +139,12 @@ const LatLongInputPopup = ({ onClose, onAddLayer }) => {
           </button>
         </div>
       </div>
+      {/* <AlertModal
+        show={showAlert}
+        content={alertContent}
+        okText="OK"
+        onClose={() => setShowAlert(false)}
+      /> */}
     </div>
   );
 };

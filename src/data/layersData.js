@@ -105,22 +105,38 @@ export const layersData = [
 ];
 
 export const builtInMapsData = [
-  { 
-    name: "Forests", 
-    category: "Environment",
-    type: "polygon",
+  // { 
+  //   name: "Forests", 
+  //   category: "Environment",
+  //   type: "polygon",
+  //   data: {
+  //     positions: [[28.70, 77.10], [28.80, 77.20], [28.75, 77.35], [28.60, 77.25]],
+  //     style: { color: 'green', fillOpacity: 0.3 }
+  //   }
+  // },
+  // { 
+  //   name: "Water sources", 
+  //   category: "Hydrology",
+  //   type: "polygon",
+  //   data: {
+  //     positions: [[28.65, 77.15], [28.75, 77.25], [28.70, 77.40], [28.55, 77.30]],
+  //     style: { color: 'blue', fillOpacity: 0.3 }
+  //   }
+  // }
+  {
+    name: "Forest Cover",
+    type: "tile", // could also be polygon/polyline if you have geoJSON
     data: {
-      positions: [[28.70, 77.10], [28.80, 77.20], [28.75, 77.35], [28.60, 77.25]],
-      style: { color: 'green', fillOpacity: 0.3 }
-    }
+      url: "https://your-tile-server.com/india-forest/{z}/{x}/{y}.png",
+      attribution: "© Forest Data",
+    },
   },
-  { 
-    name: "Water sources", 
-    category: "Hydrology",
-    type: "polygon",
+  {
+    name: "India Water Sources",
+    type: "tile",
     data: {
-      positions: [[28.65, 77.15], [28.75, 77.25], [28.70, 77.40], [28.55, 77.30]],
-      style: { color: 'blue', fillOpacity: 0.3 }
-    }
+      url: "https://your-tile-server.com/india-water/{z}/{x}/{y}.png",
+      attribution: "© Water Sources Data",
+    },
   }
 ];

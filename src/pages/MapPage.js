@@ -4,7 +4,6 @@ import UploadModal from "../components/UploadModal";
 import MapVisualization from "../components/MapVisualization";
 import Sidebar from "../components/Sidebar";
 import MapControlsSidebar from "../components/MapControlsSidebar";
-import Footer from "../components/Footer";
 import GBIFSpeciesPopup from "../components/GBIFSpeciesPopup";
 import { layersData, builtInMapsData } from "../data/layersData";
 
@@ -146,7 +145,6 @@ const MapPage = () => {
         onClose={() => setShowUploadModal(false)}
       />
 
-      <Footer />
     </div>
   );
 };

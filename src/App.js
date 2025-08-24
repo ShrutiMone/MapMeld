@@ -4,6 +4,7 @@ import Header from "./components/Header";
 import MapPage from "./pages/MapPage";
 import HowToUsePage from "./pages/HowToUsePage";
 import AboutPage from "./pages/AboutPage";
+import Footer from "./components/Footer";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           <Route path="/howto" element={<HowToUsePage />} />
           <Route path="/about" element={<AboutPage />} />
         </Routes>
+        <Footer />
       </div>
     </Router>
   );
