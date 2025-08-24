@@ -9,7 +9,7 @@ import {
   Marker,
   Polyline,
   Rectangle,
-  Circle
+  Circle,
 } from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -33,11 +33,10 @@ const getOpacity = (value) => {
 };
 
 const MapVisualization = ({ layers }) => {
-
-  console.log("Layers : ", layers)
+  console.log("Layers : ", layers);
 
   return (
-      <div className="w-full h-full relative">
+    <div className="w-full h-full relative">
       <MapContainer
         center={[20.5937, 78.9629]}
         zoom={5}
@@ -49,11 +48,21 @@ const MapVisualization = ({ layers }) => {
         />
 
         {layers
-          .filter(layer => layer.visible)
-          .map(layer => {
-            const opacity = layer.opacity !== undefined ? layer.opacity / 100 : 1;
-            
+          .filter((layer) => layer.visible)
+          .map((layer) => {
+            const opacity =
+              layer.opacity !== undefined ? layer.opacity / 100 : 1;
+
             switch (layer.type) {
+              case "tile":
+                return (
+                  <TileLayer
+                    key={layer.id}
+                    url={layer.data.url}
+                    attribution={layer.data.attribution || "GBIF"}
+                    opacity={opacity}
+                  />
+                );
               case "polygon":
                 return (
                   <Polygon
@@ -61,17 +70,20 @@ const MapVisualization = ({ layers }) => {
                     positions={layer.data.positions}
                     pathOptions={{
                       ...layer.data.style,
-                      fillOpacity: (layer.data.style.fillOpacity || 0.3) * opacity,
-                      opacity: opacity
+                      fillOpacity:
+                        (layer.data.style.fillOpacity || 0.3) * opacity,
+                      opacity: opacity,
                     }}
                   >
                     <Popup>{layer.name}</Popup>
                   </Polygon>
                 );
-              
+
               case "circleMarker":
                 return layer.data.positions.map((position, index) => {
-                  const value = layer.data.values ? layer.data.values[index] : 50;
+                  const value = layer.data.values
+                    ? layer.data.values[index]
+                    : 50;
                   return (
                     <CircleMarker
                       key={`${layer.id}-${index}`}
@@ -80,7 +92,7 @@ const MapVisualization = ({ layers }) => {
                       pathOptions={{
                         ...layer.data.style,
                         fillOpacity: getOpacity(value) * opacity,
-                        opacity: opacity
+                        opacity: opacity,
                       }}
                     >
                       <Popup>
@@ -90,7 +102,7 @@ const MapVisualization = ({ layers }) => {
                     </CircleMarker>
                   );
                 });
-              
+
               case "marker":
                 return layer.data.positions.map((position, index) => (
                   <Marker
@@ -103,7 +115,7 @@ const MapVisualization = ({ layers }) => {
                     </Popup>
                   </Marker>
                 ));
-              
+
               case "polyline":
                 return (
                   <Polyline
@@ -111,13 +123,13 @@ const MapVisualization = ({ layers }) => {
                     positions={layer.data.positions}
                     pathOptions={{
                       ...layer.data.style,
-                      opacity: opacity
+                      opacity: opacity,
                     }}
                   >
                     <Popup>{layer.name}</Popup>
                   </Polyline>
                 );
-              
+
               case "rectangle":
                 return (
                   <Rectangle
@@ -125,14 +137,15 @@ const MapVisualization = ({ layers }) => {
                     bounds={layer.data.bounds}
                     pathOptions={{
                       ...layer.data.style,
-                      fillOpacity: (layer.data.style.fillOpacity || 0.3) * opacity,
-                      opacity: opacity
+                      fillOpacity:
+                        (layer.data.style.fillOpacity || 0.3) * opacity,
+                      opacity: opacity,
                     }}
                   >
                     <Popup>{layer.name}</Popup>
                   </Rectangle>
                 );
-              
+
               case "circle":
                 return layer.data.positions.map((position, index) => (
                   <Circle
@@ -141,8 +154,9 @@ const MapVisualization = ({ layers }) => {
                     radius={layer.data.radius || 10000}
                     pathOptions={{
                       ...layer.data.style,
-                      fillOpacity: (layer.data.style.fillOpacity || 0.3) * opacity,
-                      opacity: opacity
+                      fillOpacity:
+                        (layer.data.style.fillOpacity || 0.3) * opacity,
+                      opacity: opacity,
                     }}
                   >
                     <Popup>
@@ -150,11 +164,13 @@ const MapVisualization = ({ layers }) => {
                     </Popup>
                   </Circle>
                 ));
-              
+
               case "heatmap":
                 // Simple heatmap simulation using multiple semi-transparent circles
                 return layer.data.positions.map((position, index) => {
-                  const value = layer.data.values ? layer.data.values[index] : 50;
+                  const value = layer.data.values
+                    ? layer.data.values[index]
+                    : 50;
                   const intensity = value / 100;
                   return (
                     <Circle
@@ -162,10 +178,12 @@ const MapVisualization = ({ layers }) => {
                       center={position}
                       radius={5000 + intensity * 15000}
                       pathOptions={{
-                        color: `rgb(255, ${100 + (1-intensity)*155}, 0)`,
-                        fillColor: `rgb(255, ${100 + (1-intensity)*155}, 0)`,
+                        color: `rgb(255, ${100 + (1 - intensity) * 155}, 0)`,
+                        fillColor: `rgb(255, ${
+                          100 + (1 - intensity) * 155
+                        }, 0)`,
                         fillOpacity: 0.3 * opacity * intensity,
-                        opacity: 0.7 * opacity * intensity
+                        opacity: 0.7 * opacity * intensity,
                       }}
                     >
                       <Popup>
@@ -174,7 +192,7 @@ const MapVisualization = ({ layers }) => {
                     </Circle>
                   );
                 });
-              
+
               default:
                 return null;
             }

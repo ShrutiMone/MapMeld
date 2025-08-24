@@ -1,5 +1,6 @@
 import React, { useEffect, useRef } from "react";
 import { Eye, EyeOff, Plus, ChevronDown, ChevronUp, Minus } from "lucide-react";
+import GBIFSpeciesPopup from "./GBIFSpeciesPopup"; // <-- import
 
 const SIDEBAR_WIDTH = 176;
 
@@ -10,9 +11,11 @@ const Sidebar = ({
   addBuiltInMap,
   builtInMaps,
   removeLayer,
+  addGBIFLayer, // <-- add prop
 }) => {
   const [showOptions, setShowOptions] = React.useState(false);
   const [showBuiltInList, setShowBuiltInList] = React.useState(false);
+  const [showGBIFPopup, setShowGBIFPopup] = React.useState(false); // <-- state
   const addMapDropdownRef = useRef(null);
   const addMapBtnRef = useRef(null);
 
@@ -52,7 +55,10 @@ const Sidebar = ({
           <span>Lat-long points</span>
           <Plus className="w-4 h-4" />
         </button>
-        <button className={optionStyle}>
+        <button
+          className={optionStyle}
+          onClick={() => setShowGBIFPopup(true)} // <-- open popup
+        >
           <span>GBIF data</span>
           <Plus className="w-4 h-4" />
         </button>
@@ -125,6 +131,17 @@ const Sidebar = ({
             Upload custom map
           </button>
         </div>
+      )}
+
+      {showGBIFPopup && (
+        <GBIFSpeciesPopup
+          onClose={() => setShowGBIFPopup(false)}
+          onSelectSpecies={(species) => {
+            console.log("Selected species:", species);
+            addGBIFLayer(species);
+            setShowGBIFPopup(false);
+          }}
+        />
       )}
     </div>
   );

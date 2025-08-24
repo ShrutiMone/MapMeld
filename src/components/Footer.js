@@ -1,8 +1,8 @@
 import React from "react";
 
 const Footer = () => (
-  <footer className="w-full text-center py-4 bg-gray-200 border-t border-gray-200 text-sm text-gray-500">
-    &copy; {new Date().getFullYear()} MapMeld
+  <footer className="w-full bg-green-900 text-white py-3 text-center mt-auto">
+    <span>© {new Date().getFullYear()} MapMeld. All rights reserved.</span>
   </footer>
 );
 

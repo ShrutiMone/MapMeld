@@ -5,12 +5,38 @@ import MapVisualization from "../components/MapVisualization";
 import Sidebar from "../components/Sidebar";
 import MapControlsSidebar from "../components/MapControlsSidebar";
 import Footer from "../components/Footer";
-import { layersData, builtInMapsData } from "../data/layersData"; // ⬅️ moved here
+import GBIFSpeciesPopup from "../components/GBIFSpeciesPopup";
+import { layersData, builtInMapsData } from "../data/layersData";
 
 const MapPage = () => {
   const [showBuiltInDropdown, setShowBuiltInDropdown] = useState(false);
   const [showUploadModal, setShowUploadModal] = useState(false);
-  const [layers, setLayers] = useState(layersData); // ⬅️ initialized here
+  const [showGBIFPopup, setShowGBIFPopup] = useState(false);
+
+  const [layers, setLayers] = useState(layersData);
+
+  // Add GBIF layer using v2 tile API
+  const addGBIFLayer = async (species) => {
+    if (!species?.key) {
+      alert("No taxonKey found for this species.");
+      return;
+    }
+
+    const newLayer = {
+      id: Date.now(),
+      name: `${species.scientificName} (GBIF)`,
+      visible: true,
+      type: "tile",
+      data: {
+        // url: `https://api.gbif.org/v2/map/occurrence/density/{z}/{x}/{y}@1x.png?taxonKey=${species.key}&style=classic.poly`,
+        url: `https://tile.gbif.org/3857/omt/{z}/{x}/{y}@1x.png?taxonKey=${species.key}&style=purpleYellow`,
+        attribution: "© GBIF",
+      },
+      opacity: 100,
+    };
+
+    setLayers((prev) => [newLayer, ...prev]);
+  };
 
   const updateLayers = (newLayers) => setLayers(newLayers);
 
@@ -23,18 +49,18 @@ const MapPage = () => {
   };
 
   const addBuiltInMap = (mapName) => {
-    const mapConfig = builtInMapsData.find(map => map.name === mapName);
+    const mapConfig = builtInMapsData.find((map) => map.name === mapName);
     if (!mapConfig) return;
-    
+
     const newLayer = {
       id: Date.now(),
       name: mapName,
       visible: true,
       type: mapConfig.type,
       data: mapConfig.data,
-      opacity: 100
+      opacity: 100,
     };
-    
+
     updateLayers([newLayer, ...layers]);
     setShowBuiltInDropdown(false);
   };
@@ -58,19 +84,18 @@ const MapPage = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen">
-      <div className="flex flex-1">
+    <div className="flex flex-col min-h-screen">
+      <div className="flex flex-1 h-full">
         <Sidebar
-          showBuiltInDropdown={showBuiltInDropdown}
-          setShowBuiltInDropdown={setShowBuiltInDropdown}
-          setShowUploadModal={setShowUploadModal}
           layers={layers}
+          builtInMaps={builtInMapsData}
+          addGBIFLayer={addGBIFLayer}
           toggleLayer={toggleLayer}
-          addBuiltInMap={addBuiltInMap}
-          builtInMaps={builtInMapsData} // ⬅️ now local
           removeLayer={removeLayer}
+          setShowUploadModal={setShowUploadModal}
+          addBuiltInMap={addBuiltInMap}
+          setShowGBIFPopup={setShowGBIFPopup}
         />
-
         <div className="flex-1 relative">
           {showBuiltInDropdown && (
             <div className="absolute top-0 left-0 w-64 bg-white border border-gray-300 rounded shadow-lg z-30 m-4">
@@ -109,12 +134,13 @@ const MapPage = () => {
           moveLayer={moveLayer}
           setLayerOpacity={setLayerOpacity}
         />
-
-        <UploadModal
-          show={showUploadModal}
-          onClose={() => setShowUploadModal(false)}
-        />
       </div>
+
+      <UploadModal
+        show={showUploadModal}
+        onClose={() => setShowUploadModal(false)}
+      />
+
       <Footer />
     </div>
   );
