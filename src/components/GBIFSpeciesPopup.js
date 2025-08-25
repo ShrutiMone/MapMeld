@@ -65,14 +65,9 @@ const GBIFSpeciesPopup = ({ onClose, onSelectSpecies }) => {
             onChange={(e) => setStyle(e.target.value)}
             className="border rounded px-2 py-1 w-full"
           >
-            <option value="classic.poly">Classic (Yellow → Red)</option>
             <option value="classic.point">Classic Points</option>
-            <option value="purpleYellow.poly">Purple → Yellow</option>
-            <option value="green.poly">Green → White</option>
             <option value="blue.marker">Blue Markers</option>
             <option value="orange.marker">Orange Markers</option>
-            <option value="purpleHeat.point">Purple Heatmap</option>
-            <option value="greenHeat.point">Green Heatmap</option>
             <option value="outline.poly">Outlined Polygons</option>
           </select>
         </div>

@@ -21,7 +21,9 @@ const UploadModal = ({ show, onClose, onUpload }) => {
     try {
       if (ext === "geojson" || ext === "json") {
         const text = await file.text();
+        console.log("File Fetched!")
         parsed = JSON.parse(text);
+        console.log("File parsed")
       } else if (ext === "kml") {
         const text = await file.text();
         parsed = { type: "kml", raw: text };

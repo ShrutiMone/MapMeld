@@ -92,6 +92,7 @@ const MapPage = () => {
   const handleFileUpload = (data) => {
     console.log("Uploaded file object:", data);
 
+    addCustomLayer(data)
     
   };
 
