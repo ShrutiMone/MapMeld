@@ -17,7 +17,7 @@ const MapPage = () => {
   const [layers, setLayers] = useState(layersData);
 
   // Add GBIF layer using v2 tile API
-  const addGBIFLayer = async (species) => {
+  const addGBIFLayer = (species, selectedStyle) => {
     if (!species?.key) {
       setShowAlert(true);
       return;
@@ -29,15 +29,15 @@ const MapPage = () => {
       visible: true,
       type: "tile",
       data: {
-        // url: `https://api.gbif.org/v2/map/occurrence/density/{z}/{x}/{y}@1x.png?taxonKey=${species.key}&style=classic.poly`,
-        url: `https://tile.gbif.org/3857/omt/{z}/{x}/{y}@1x.png?taxonKey=${species.key}&style=purpleYellow`,
-        attribution: "© GBIF",
+        url: `https://api.gbif.org/v2/map/occurrence/density/{z}/{x}/{y}@1x.png?taxonKey=${species.nubKey}&style=${selectedStyle}`,
+        attribution: '© <a href="https://www.gbif.org/">GBIF</a>',
       },
       opacity: 100,
     };
 
     setLayers((prev) => [newLayer, ...prev]);
   };
+
 
   const addCustomLayer = (layer) => {
     setLayers((prev) => [layer, ...prev]);

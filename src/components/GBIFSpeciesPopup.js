@@ -7,10 +7,12 @@ const GBIFSpeciesPopup = ({ onClose, onSelectSpecies }) => {
   const [results, setResults] = useState([]);
   const [loading, setLoading] = useState(false);
 
+  // new: style selector
+  const [style, setStyle] = useState("classic.poly");
+
   const searchSpecies = async () => {
     setLoading(true);
     try {
-        console.log(`${GBIF_API}?q=${encodeURIComponent(query)}&limit=10`)
       const res = await fetch(
         `${GBIF_API}?q=${encodeURIComponent(query)}&limit=10`
       );
@@ -23,7 +25,10 @@ const GBIFSpeciesPopup = ({ onClose, onSelectSpecies }) => {
   };
 
   return (
-    <div className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center" style={{ zIndex: 9999 }}>
+    <div
+      className="fixed inset-0 bg-gray-900 bg-opacity-50 flex items-center justify-center"
+      style={{ zIndex: 9999 }}
+    >
       <div className="bg-white rounded shadow-lg p-6 w-96 relative">
         <button
           className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
@@ -31,7 +36,10 @@ const GBIFSpeciesPopup = ({ onClose, onSelectSpecies }) => {
         >
           ✕
         </button>
+
         <h2 className="text-lg font-semibold mb-2">Search GBIF Species</h2>
+
+        {/* Search input */}
         <input
           type="text"
           className="w-full border px-2 py-1 rounded mb-2"
@@ -40,6 +48,7 @@ const GBIFSpeciesPopup = ({ onClose, onSelectSpecies }) => {
           onChange={(e) => setQuery(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && searchSpecies()}
         />
+
         <button
           className="bg-green-600 text-white px-3 py-1 rounded mb-2"
           onClick={searchSpecies}
@@ -47,12 +56,34 @@ const GBIFSpeciesPopup = ({ onClose, onSelectSpecies }) => {
         >
           {loading ? "Searching..." : "Search"}
         </button>
+
+        {/* Style selector */}
+        <div className="mb-3">
+          <label className="mr-2 text-sm text-gray-700">Style:</label>
+          <select
+            value={style}
+            onChange={(e) => setStyle(e.target.value)}
+            className="border rounded px-2 py-1 w-full"
+          >
+            <option value="classic.poly">Classic (Yellow → Red)</option>
+            <option value="classic.point">Classic Points</option>
+            <option value="purpleYellow.poly">Purple → Yellow</option>
+            <option value="green.poly">Green → White</option>
+            <option value="blue.marker">Blue Markers</option>
+            <option value="orange.marker">Orange Markers</option>
+            <option value="purpleHeat.point">Purple Heatmap</option>
+            <option value="greenHeat.point">Green Heatmap</option>
+            <option value="outline.poly">Outlined Polygons</option>
+          </select>
+        </div>
+
+        {/* Results list */}
         <div className="max-h-48 overflow-y-auto">
           {results.map((species) => (
             <button
               key={species.key}
               className="block w-full text-left px-2 py-1 hover:bg-green-50 rounded"
-              onClick={() => onSelectSpecies(species)}
+              onClick={() => onSelectSpecies(species, style)} // pass style along
             >
               <div className="font-medium">{species.scientificName}</div>
               <div className="text-xs text-gray-500">

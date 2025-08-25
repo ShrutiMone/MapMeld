@@ -1,4 +1,3 @@
-// MapVisualization.js
 import React from "react";
 import {
   MapContainer,
@@ -42,10 +41,22 @@ const MapVisualization = ({ layers }) => {
         zoom={5}
         className="w-full h-full"
       >
+        {/* Default basemap - you can swap OSM with GBIF basemap */}
+        {/*<TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />*/}
+
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
+
+        {/* Example: GBIF Basemap (replace above OSM if you want GBIF base) */}
+        {/* <TileLayer
+          attribution='© <a href="https://www.gbif.org/">GBIF</a>, © OpenStreetMap contributors'
+          url="https://tile.gbif.org/3857/omt/{z}/{x}/{y}@1x.png"
+        /> */}
 
         {layers
           .filter((layer) => layer.visible)
@@ -63,6 +74,7 @@ const MapVisualization = ({ layers }) => {
                     opacity={opacity}
                   />
                 );
+
               case "polygon":
                 return (
                   <Polygon
@@ -88,7 +100,7 @@ const MapVisualization = ({ layers }) => {
                     <CircleMarker
                       key={`${layer.id}-${index}`}
                       center={position}
-                      radius={8 + (value / 100) * 12} // Scale radius based on value
+                      radius={8 + (value / 100) * 12}
                       pathOptions={{
                         ...layer.data.style,
                         fillOpacity: getOpacity(value) * opacity,
@@ -166,7 +178,6 @@ const MapVisualization = ({ layers }) => {
                 ));
 
               case "heatmap":
-                // Simple heatmap simulation using multiple semi-transparent circles
                 return layer.data.positions.map((position, index) => {
                   const value = layer.data.values
                     ? layer.data.values[index]

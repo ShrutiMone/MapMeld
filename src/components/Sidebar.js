@@ -153,9 +153,9 @@ const Sidebar = ({
       {showGBIFPopup && (
         <GBIFSpeciesPopup
           onClose={() => setShowGBIFPopup(false)}
-          onSelectSpecies={(species) => {
+          onSelectSpecies={(species, colour) => {
             console.log("Selected species:", species);
-            addGBIFLayer(species);
+            addGBIFLayer(species, colour);
             setShowGBIFPopup(false);
           }}
         />
