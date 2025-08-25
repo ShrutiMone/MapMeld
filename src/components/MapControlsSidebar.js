@@ -1,7 +1,10 @@
+// components/MapControlsSidebar.js
 import React, { useRef, useState } from "react";
-import { Eye, EyeOff, Minus, Download } from "lucide-react";
+import { Eye, EyeOff, Minus, Download, Settings, MousePointer } from "lucide-react";
 import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import AlertModal from "./AlertModal";
+import ImageAlignmentTool from "./ImageAlignmentTool";
+import InteractiveImageAlignment from "./InteractiveImageAlignment";
 
 const DEFAULT_WIDTH = 280;
 const MIN_WIDTH = 230;
@@ -13,9 +16,15 @@ const MapControlsSidebar = ({
   removeLayer,
   moveLayer,
   setLayerOpacity,
+  updateLayer,
+  mapInstance,
+  editingImage,
+  setEditingImage, // This is the prop, not a state
 }) => {
   const [sidebarWidth, setSidebarWidth] = useState(DEFAULT_WIDTH);
   const [showAlert, setShowAlert] = useState(false);
+  const [interactiveMode, setInteractiveMode] = useState(false);
+  // Remove the duplicate declaration of setEditingImage
 
   const resizing = useRef(false);
   const sidebarRef = useRef(null);
@@ -52,7 +61,7 @@ const MapControlsSidebar = ({
       window.removeEventListener("mousemove", onMouseMove);
       window.removeEventListener("mouseup", onMouseUp);
     };
-  }, []); // attach once
+  }, []);
 
   // Mouse events for resizing
   const handleMouseDown = (e) => {
@@ -64,10 +73,8 @@ const MapControlsSidebar = ({
 
   const handleMouseMove = (e) => {
     if (!resizing.current) return;
-    // const dx = resizing.startX - e.clientX;
-    // let newWidth = resizing.startWidth + dx;
-    const dx = e.clientX - resizing.startX; // distance mouse moved
-    let newWidth = resizing.startWidth - dx; // decrease width when dragging right
+    const dx = e.clientX - resizing.startX;
+    let newWidth = resizing.startWidth - dx;
 
     if (newWidth < MIN_WIDTH) newWidth = MIN_WIDTH;
     if (newWidth > MAX_WIDTH) newWidth = MAX_WIDTH;
@@ -88,7 +95,6 @@ const MapControlsSidebar = ({
       window.removeEventListener("mousemove", handleMouseMove);
       window.removeEventListener("mouseup", handleMouseUp);
     };
-    // eslint-disable-next-line
   }, [resizing.current]);
 
   const LayerIcon = ({ layer }) => {
@@ -171,6 +177,22 @@ const MapControlsSidebar = ({
             </defs>
           </svg>
         );
+      case "image":
+        return (
+          <svg width="16" height="16" className="mr-2 flex-shrink-0">
+            <rect
+              x="2"
+              y="2"
+              width="12"
+              height="12"
+              fill="white"
+              stroke={color}
+              strokeWidth="1"
+            />
+            <line x1="2" y1="2" x2="14" y2="14" stroke={color} strokeWidth="1" />
+            <line x1="14" y1="2" x2="2" y2="14" stroke={color} strokeWidth="1" />
+          </svg>
+        );
       default:
         return null;
     }
@@ -240,6 +262,18 @@ const MapControlsSidebar = ({
                           </div>
 
                           <div className="flex items-center space-x-1">
+                            {/* Alignment button for image layers */}
+                            {layer.type === 'image' && (
+                              <button
+                                onClick={() => setEditingImage(layer)}
+                                className="p-1 rounded text-blue-500 hover:bg-blue-50"
+                                title="Align image"
+                                style={{ padding: "2px" }}
+                              >
+                                <Settings className="w-4 h-4" />
+                              </button>
+                            )}
+                            
                             {/* Drag handle */}
                             <span
                               className="cursor-grab text-xs"
@@ -325,6 +359,7 @@ const MapControlsSidebar = ({
           </Droppable>
         </DragDropContext>
       </div>
+      
       {/* Export button at the bottom */}
       <div className="p-4 border-t border-gray-200 sticky bottom-0 bg-gray-100 mt-auto">
         <button
@@ -335,11 +370,50 @@ const MapControlsSidebar = ({
           <span>Export</span>
         </button>
       </div>
+      
       <AlertModal
-            show={showAlert}
-            content="Export functionality coming soon!"
-            onClose={() => setShowAlert(false)}
-          />
+        show={showAlert}
+        content="Export functionality coming soon!"
+        onClose={() => setShowAlert(false)}
+      />
+      
+      {/* Image Alignment Tool Modal */}
+      {editingImage && !interactiveMode && (
+        <ImageAlignmentTool
+          imageLayer={editingImage}
+          onUpdate={(updatedLayer) => {
+            updateLayer(updatedLayer);
+          }}
+          onClose={() => {
+            setEditingImage(null);
+            setInteractiveMode(false);
+          }}
+          map={mapInstance}
+          onInteractiveMode={() => {
+            if (mapInstance) {
+              setInteractiveMode(true);
+            } else {
+              setShowAlert(true);
+              setEditingImage(null);
+            }
+          }}
+        />
+      )}
+      
+      {/* Interactive Image Alignment Modal */}
+      {editingImage && interactiveMode && mapInstance && (
+        <InteractiveImageAlignment
+          imageLayer={editingImage}
+          onUpdate={(updatedLayer) => {
+            updateLayer(updatedLayer);
+          }}
+          onClose={() => {
+            setEditingImage(null);
+            setInteractiveMode(false);
+          }}
+          map={mapInstance}
+        />
+      )}
     </div>
   );
 };

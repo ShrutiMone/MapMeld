@@ -13,6 +13,8 @@ const MapPage = () => {
   const [showUploadModal, setShowUploadModal] = useState(false);
   const [showGBIFPopup, setShowGBIFPopup] = useState(false);
   const [showAlert, setShowAlert] = useState(false);
+  const [mapInstance, setMapInstance] = useState(null);
+  const [editingImage, setEditingImage] = useState(null);
 
   const [layers, setLayers] = useState(layersData);
 
@@ -53,6 +55,12 @@ const MapPage = () => {
     );
   };
 
+  const updateLayer = (updatedLayer) => {
+    setLayers(prev => prev.map(layer => 
+      layer.id === updatedLayer.id ? updatedLayer : layer
+    ));
+  };
+
   const addBuiltInMap = (mapName) => {
     const mapConfig = builtInMapsData.find((map) => map.name === mapName);
     if (!mapConfig) return;
@@ -91,9 +99,11 @@ const MapPage = () => {
    // Function called when user uploads a file
   const handleFileUpload = (data) => {
     console.log("Uploaded file object:", data);
-
     addCustomLayer(data)
-    
+  };
+
+  const handleMapReady = (map) => {
+    setMapInstance(map);
   };
 
   return (
@@ -135,9 +145,13 @@ const MapPage = () => {
               </div>
             </div>
           )}
-
           <div className="h-full bg-gray-300 flex items-center justify-center">
-            <MapVisualization layers={layers} />
+            <MapVisualization 
+              layers={layers} 
+              onMapReady={handleMapReady} 
+              editingImage={editingImage}
+              updateLayer={updateLayer}
+            />
           </div>
         </div>
 
@@ -147,6 +161,10 @@ const MapPage = () => {
           removeLayer={removeLayer}
           moveLayer={moveLayer}
           setLayerOpacity={setLayerOpacity}
+          updateLayer={updateLayer}
+          mapInstance={mapInstance} // Pass map instance
+          editingImage={editingImage} // Add this prop
+          setEditingImage={setEditingImage} // Add this prop
         />
       </div>
 
