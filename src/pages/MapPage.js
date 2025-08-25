@@ -88,6 +88,13 @@ const MapPage = () => {
     );
   };
 
+   // Function called when user uploads a file
+  const handleFileUpload = (data) => {
+    console.log("Uploaded file object:", data);
+
+    
+  };
+
   return (
     <div className="flex flex-col min-h-screen">
       <div className="flex flex-1 h-full">
@@ -145,6 +152,7 @@ const MapPage = () => {
       <UploadModal
         show={showUploadModal}
         onClose={() => setShowUploadModal(false)}
+        onUpload={handleFileUpload}
       />
 
       <AlertModal

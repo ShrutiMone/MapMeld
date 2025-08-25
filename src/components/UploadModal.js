@@ -1,25 +1,66 @@
-import React from 'react';
-import { FolderOpen } from 'lucide-react';
+import React, { useState } from "react";
+import { FolderOpen } from "lucide-react";
 
-const UploadModal = ({ show, onClose }) => {
+const UploadModal = ({ show, onClose, onUpload }) => {
+  const [file, setFile] = useState(null);
+
   if (!show) return null;
 
+  const handleFileChange = (e) => {
+    if (e.target.files.length > 0) {
+      setFile(e.target.files[0]);
+    }
+  };
+
+  const handleUpload = async () => {
+    if (!file) return;
+
+    const ext = file.name.split(".").pop().toLowerCase();
+    let parsed = null;
+
+    try {
+      if (ext === "geojson" || ext === "json") {
+        const text = await file.text();
+        parsed = JSON.parse(text);
+      } else if (ext === "kml") {
+        const text = await file.text();
+        parsed = { type: "kml", raw: text };
+      } else if (ext === "shp") {
+        parsed = { type: "shp", file };
+      } else {
+        alert("Unsupported file type");
+        return;
+      }
+
+      if (onUpload) {
+        onUpload(parsed); // ✅ only called when Upload button clicked
+      }
+
+      onClose(); // close modal after upload
+    } catch (err) {
+      console.error("File parse error:", err);
+      alert("Error parsing file");
+    }
+  };
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
-      style={{
-        zIndex: 4000
-      }}
-      >
+    <div
+      className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+      style={{ zIndex: 4000 }}
+    >
       <div className="bg-white rounded-lg p-6 w-96 max-w-90vw">
         <h3 className="text-lg font-semibold mb-4">Upload map file</h3>
         <div className="border-2 border-dashed border-gray-300 rounded-lg p-12 text-center">
           <FolderOpen className="w-12 h-12 text-gray-400 mx-auto mb-4" />
-          <p className="text-gray-600 mb-2">Browse or drag and drop the file here</p>
+          <p className="text-gray-600 mb-2">
+            {file ? `Selected: ${file.name}` : "Browse or drag and drop the file here"}
+          </p>
           <input
             type="file"
             className="hidden"
             id="file-upload"
             accept=".geojson,.kml,.shp,.json"
+            onChange={handleFileChange}
           />
           <label
             htmlFor="file-upload"
@@ -36,8 +77,11 @@ const UploadModal = ({ show, onClose }) => {
             Cancel
           </button>
           <button
-            onClick={onClose}
-            className="px-4 py-2 bg-green-600 text-white rounded hover:bg-green-700"
+            onClick={handleUpload}
+            disabled={!file}
+            className={`px-4 py-2 rounded text-white ${
+              file ? "bg-green-600 hover:bg-green-700" : "bg-gray-400 cursor-not-allowed"
+            }`}
           >
             Upload
           </button>
