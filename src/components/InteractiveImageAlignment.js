@@ -46,7 +46,7 @@ const InteractiveImageAlignment = ({ imageLayer, onUpdate, onClose, map }) => {
         updateImageRotation(newRotation);
       } else if (isScaling) {
         const deltaY = startY - e.clientY;
-        const newScale = Math.max(0.1, Math.min(500, startScale + deltaY * 0.01));
+        const newScale = Math.max(0.1, Math.min(500, startScale + deltaY * 0.3));
         updateImageScale(newScale);
       }
     };
