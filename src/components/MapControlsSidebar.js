@@ -171,21 +171,6 @@ const MapControlsSidebar = ({
             </defs>
           </svg>
         );
-      case "tile":
-        // Use a simple grid or a GBIF logo if you want
-        return (
-          <svg
-            width="16"
-            height="16"
-            className="mr-2 flex-shrink-0"
-            viewBox="0 0 16 16"
-          >
-            <rect x="2" y="2" width="4" height="4" fill="#4caf50" />
-            <rect x="8" y="2" width="4" height="4" fill="#81c784" />
-            <rect x="2" y="8" width="4" height="4" fill="#a5d6a7" />
-            <rect x="8" y="8" width="4" height="4" fill="#c8e6c9" />
-          </svg>
-        );
       default:
         return null;
     }
