@@ -64,7 +64,7 @@ export const layersData = [
         [[30.5, 78.5], [29.5, 79.5], [28.5, 80.5], [27.5, 81.5]],
         [[26.5, 82.5], [25.5, 83.5], [24.5, 84.5]]
       ],
-      style: { color: '#0000', weight: 3 }
+      style: { color: '#0000bb', weight: 3 }
     },
     opacity: 100
   },

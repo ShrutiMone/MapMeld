@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from "react";
 import { Eye, EyeOff, Plus, ChevronDown, ChevronUp, Minus } from "lucide-react";
-import GBIFSpeciesPopup from "./GBIFSpeciesPopup"; // <-- import
+import GBIFSpeciesPopup from "./GBIFSpeciesPopup";
 import LatLongInputPopup from "./LatLongInputPopup";
+import ImportMapMeldModal from "./ImportMapMeldModal";
 
 const SIDEBAR_WIDTH = 176;
 
@@ -17,10 +18,11 @@ const Sidebar = ({
 }) => {
   const [showOptions, setShowOptions] = React.useState(false);
   const [showBuiltInList, setShowBuiltInList] = React.useState(false);
-  const [showGBIFPopup, setShowGBIFPopup] = React.useState(false); // <-- state
+  const [showGBIFPopup, setShowGBIFPopup] = React.useState(false);
   const addMapDropdownRef = useRef(null);
   const addMapBtnRef = useRef(null);
   const [showLatLongPopup, setShowLatLongPopup] = React.useState(false);
+  const [showImportModal, setShowImportModal] = React.useState(false);
 
   // Hide add map dropdown when clicking outside
   useEffect(() => {
@@ -79,7 +81,10 @@ const Sidebar = ({
           <span>GBIF data</span>
           <Plus className="w-4 h-4" />
         </button>
-        <button className={optionStyle + " text-gray-500"}>
+        <button
+          className={optionStyle}
+          onClick={() => setShowImportModal(true)}
+        >
           <span>Import MapMeld file</span>
           <Plus className="w-4 h-4" />
         </button>
@@ -160,6 +165,29 @@ const Sidebar = ({
           }}
         />
       )}
+
+      {showImportModal && (
+        <ImportMapMeldModal
+          show={showImportModal}
+          onClose={() => setShowImportModal(false)}
+          onImport={(parsedLayers, mode) => {
+            console.log("New parsedLayers", parsedLayers)
+            if (mode === "replace") {
+              // Replace current layers
+              //addCustomLayer(null); // optional no-op
+              window.dispatchEvent(
+                new CustomEvent("mapmeld-import", { detail: { layers: parsedLayers, mode } })
+              );
+            } else {
+              // Append layers
+              window.dispatchEvent(
+                new CustomEvent("mapmeld-import", { detail: { layers: parsedLayers, mode } })
+              );
+            }
+          }}
+        />
+      )}
+
     </div>
   );
 };

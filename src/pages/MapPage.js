@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Map, Plus } from "lucide-react";
 import UploadModal from "../components/UploadModal";
 import MapVisualization from "../components/MapVisualization";
@@ -21,6 +21,26 @@ const MapPage = () => {
 
 
   const [layers, setLayers] = useState(layersData);
+
+  useEffect(() => {
+    const handleImport = (e) => {
+      // TODO : Check new layers for common ID and modify it if clashes
+      const { layers: imported, mode } = e.detail;
+      if (Array.isArray(imported)) {
+        if (mode === "replace") {
+          setLayers(imported);
+        } else {
+          setLayers((prev) => [...imported, ...prev]);
+        }
+      } else {
+        console.error("Invalid .MapMeld file format");
+      }
+    };
+
+    window.addEventListener("mapmeld-import", handleImport);
+    return () => window.removeEventListener("mapmeld-import", handleImport);
+  }, []);
+
 
   // Add GBIF layer using v2 tile API
   const addGBIFLayer = (species, selectedStyle) => {
