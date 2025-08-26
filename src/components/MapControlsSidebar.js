@@ -5,6 +5,8 @@ import { DragDropContext, Droppable, Draggable } from "@hello-pangea/dnd";
 import AlertModal from "./AlertModal";
 import ImageAlignmentTool from "./ImageAlignmentTool";
 import InteractiveImageAlignment from "./InteractiveImageAlignment";
+import ExportModal from "./ExportModal";
+import "leaflet-easyprint";
 
 const DEFAULT_WIDTH = 280;
 const MIN_WIDTH = 230;
@@ -27,10 +29,41 @@ const MapControlsSidebar = ({
   const [sidebarWidth, setSidebarWidth] = useState(DEFAULT_WIDTH);
   const [showAlert, setShowAlert] = useState(false);
   const [interactiveMode, setInteractiveMode] = useState(false);
-  // Remove the duplicate declaration of setEditingImage
+  const [showExportModal, setShowExportModal] = useState(false);
 
   const resizing = useRef(false);
   const sidebarRef = useRef(null);
+
+  const handleExportImage = () => {
+    if (!mapInstance) return;
+
+    const L = require("leaflet");
+    require("leaflet-easyprint");
+
+    const printer = L.easyPrint({
+      tileLayer: mapInstance.tileLayer,
+      sizeModes: ["Current"],
+      filename: "map-export",
+      exportOnly: true,
+      hideControlContainer: true,
+    }).addTo(mapInstance);
+
+    printer.printMap("CurrentSize", "map-export");
+    setShowExportModal(false);
+  };
+
+  const handleExportMapMeld = () => {
+    const blob = new Blob([JSON.stringify(layers, null, 2)], {
+      type: "application/json",
+    });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "map_layers.MapMeld";
+    a.click();
+    URL.revokeObjectURL(url);
+    setShowExportModal(false);
+  };
 
   // Handle drag end for layers
   const onDragEnd = (result) => {
@@ -397,15 +430,20 @@ const MapControlsSidebar = ({
       </div>
       
       {/* Export button at the bottom */}
-      <div className="p-4 border-t border-gray-200 sticky bottom-0 bg-gray-100 mt-auto">
-        <button
-          className="w-full py-2 px-4 rounded bg-green-600 hover:bg-green-700 text-white font-semibold flex items-center justify-center space-x-2 transition"
-          onClick={() => setShowAlert(true)}
-        >
-          <Download className="w-4 h-4" />
-          <span>Export</span>
-        </button>
-      </div>
+      <button
+        className="w-full py-2 px-4 rounded bg-green-600 hover:bg-green-700 text-white font-semibold flex items-center justify-center space-x-2 transition"
+        onClick={() => setShowExportModal(true)}
+      >
+        <Download className="w-4 h-4" />
+        <span>Export</span>
+      </button>
+
+      <ExportModal
+        show={showExportModal}
+        onClose={() => setShowExportModal(false)}
+        onExportImage={handleExportImage}
+        onExportMapMeld={handleExportMapMeld}
+      />
       
       <AlertModal
         show={showAlert}
