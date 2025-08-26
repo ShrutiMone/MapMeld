@@ -4,6 +4,7 @@ import UploadModal from "../components/UploadModal";
 import MapVisualization from "../components/MapVisualization";
 import Sidebar from "../components/Sidebar";
 import MapControlsSidebar from "../components/MapControlsSidebar";
+import EditLayerPopup from "../components/EditLayerPopup";
 import GBIFSpeciesPopup from "../components/GBIFSpeciesPopup";
 import { layersData, builtInMapsData } from "../data/layersData";
 import AlertModal from "../components/AlertModal";
@@ -16,6 +17,7 @@ const MapPage = () => {
   const [mapInstance, setMapInstance] = useState(null);
   const [editingImage, setEditingImage] = useState(null);
   const [baseOpacity, setBaseOpacity] = useState(100); // percentage
+  const [editingLayer, setEditingLayer] = useState(null);
 
 
   const [layers, setLayers] = useState(layersData);
@@ -174,6 +176,7 @@ const MapPage = () => {
           setEditingImage={setEditingImage}
           baseOpacity={baseOpacity}
           setBaseOpacity={setBaseOpacity}
+          setEditingLayer={setEditingLayer}
         />
 
       </div>
@@ -189,6 +192,14 @@ const MapPage = () => {
         content="No taxonKey found for this species."
         onClose={() => setShowAlert(false)}
       />
+
+      {editingLayer && (
+        <EditLayerPopup
+          layer={editingLayer}
+          onClose={() => setEditingLayer(null)}
+          onUpdateLayer={updateLayer}
+        />
+      )}
     </div>
   );
 };

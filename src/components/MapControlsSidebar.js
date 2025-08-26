@@ -21,7 +21,8 @@ const MapControlsSidebar = ({
   editingImage,
   setEditingImage,
   baseOpacity,
-  setBaseOpacity
+  setBaseOpacity,
+  setEditingLayer
 }) => {
   const [sidebarWidth, setSidebarWidth] = useState(DEFAULT_WIDTH);
   const [showAlert, setShowAlert] = useState(false);
@@ -99,7 +100,7 @@ const MapControlsSidebar = ({
     };
   }, [resizing.current]);
 
-  const LayerIcon = ({ layer }) => {
+  const LayerIcon = ({ layer, setEditingLayer }) => {
     const color = layer.data?.style?.color || "gray";
 
     switch (layer.type) {
@@ -286,7 +287,9 @@ const MapControlsSidebar = ({
                         style={provided.draggableProps.style}
                       >
                         {/* Layer row */}
-                        <div className="flex items-center justify-between w-full">
+                        <div className="flex items-center justify-between w-full"
+                          onDoubleClick={() => setEditingLayer(layer)}
+                          >
                           <div className="flex items-center min-w-0">
                             <LayerIcon layer={layer} />
                             <span className="text-sm text-gray-600 truncate">

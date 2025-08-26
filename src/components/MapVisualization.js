@@ -291,7 +291,6 @@ const MapVisualization = ({ layers, onMapReady, editingImage, updateLayer, baseO
                       url={layer.data.url}
                       bounds={bounds}
                       opacity={opacity}
-                      zIndex={500}
                     >
                       <Popup>
                         <div>

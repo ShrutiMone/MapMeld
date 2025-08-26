@@ -14,7 +14,7 @@ export const layersData = [
         [[28.70, 77.10], [28.80, 77.20], [28.75, 77.35], [28.60, 77.25]],
         [[28.50, 77.40], [28.60, 77.50], [28.55, 77.65], [28.40, 77.55]]
       ],
-      style: { color: 'green', fillOpacity: 0.4 }
+      style: { color: '#005416', fillOpacity: 0.4 }
     },
     opacity: 100
   },
@@ -28,7 +28,7 @@ export const layersData = [
         [[28.65, 77.15], [28.75, 77.25], [28.70, 77.40], [28.55, 77.30]],
         [[28.45, 77.00], [28.55, 77.10], [28.50, 77.25], [28.35, 77.15]]
       ],
-      style: { color: 'blue', fillOpacity: 0.5 }
+      style: { color: '#0000ff', fillOpacity: 0.5 }
     },
     opacity: 100
   },
@@ -40,7 +40,7 @@ export const layersData = [
     data: {
       positions: [[25.3, 82.9], [22.6, 88.4], [12.9, 77.6], [26.8, 75.8]],
       values: [90, 60, 25, 10],
-      style: { color: 'red' }
+      style: { color: '#ff0000' }
     },
     opacity: 100
   },
@@ -64,7 +64,7 @@ export const layersData = [
         [[30.5, 78.5], [29.5, 79.5], [28.5, 80.5], [27.5, 81.5]],
         [[26.5, 82.5], [25.5, 83.5], [24.5, 84.5]]
       ],
-      style: { color: 'blue', weight: 3 }
+      style: { color: '#0000', weight: 3 }
     },
     opacity: 100
   },
@@ -78,7 +78,7 @@ export const layersData = [
         [[29.5, 76.5], [30.5, 77.5]],
         [[27.5, 79.5], [28.5, 80.5]]
       ],
-      style: { color: 'purple', fillOpacity: 0.2 }
+      style: { color: '#660066', fillOpacity: 0.2 }
     },
     opacity: 100
   },
@@ -90,7 +90,7 @@ export const layersData = [
     data: {
       positions: [[28.6139, 77.209], [19.076, 72.8777], [13.0827, 80.2707]],
       radius: 15000,
-      style: { color: 'orange', fillOpacity: 0.3 }
+      style: { color: '#ff5500', fillOpacity: 0.3 }
     },
     opacity: 100
   },
@@ -108,40 +108,6 @@ export const layersData = [
 ];
 
 export const builtInMapsData = [
-  // { 
-  //   name: "Forests", 
-  //   category: "Environment",
-  //   type: "polygon",
-  //   data: {
-  //     positions: [[28.70, 77.10], [28.80, 77.20], [28.75, 77.35], [28.60, 77.25]],
-  //     style: { color: 'green', fillOpacity: 0.3 }
-  //   }
-  // },
-  // { 
-  //   name: "Water sources", 
-  //   category: "Hydrology",
-  //   type: "polygon",
-  //   data: {
-  //     positions: [[28.65, 77.15], [28.75, 77.25], [28.70, 77.40], [28.55, 77.30]],
-  //     style: { color: 'blue', fillOpacity: 0.3 }
-  //   }
-  // }
-  {
-    name: "Forest Cover",
-    type: "tile", // could also be polygon/polyline if you have geoJSON
-    data: {
-      url: "https://your-tile-server.com/india-forest/{z}/{x}/{y}.png", // add correct url here
-      attribution: "© Forest Data",
-    },
-  },
-  {
-    name: "India Water Sources",
-    type: "tile",
-    data: {
-      url: "https://your-tile-server.com/india-water/{z}/{x}/{y}.png", // add correct url here
-      attribution: "© Water Sources Data",
-    },
-  },
   {
     name: "India-River-Map",
     type: "image",
