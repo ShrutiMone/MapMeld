@@ -173,6 +173,7 @@ export const builtInMapsData = [
         width: 850,
         height: 1136
     },
-    opacity: 100
+    opacity: 100,
+    citation: "Reddy, C. S., Jha, C. S., Diwakar, P. G., & Dadhwal, V. K. (2015). Nationwide classification of forest types of India using remote sensing and GIS. Environmental monitoring and assessment, 187(12), 777."
   }
 ];
