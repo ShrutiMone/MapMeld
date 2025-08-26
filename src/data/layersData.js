@@ -1,5 +1,7 @@
 // layersData.js
 
+import indiaRiverMap from "./images/India-River-Map.png"
+
 export const layersData = [
   { 
     id: 1, 
@@ -137,6 +139,22 @@ export const builtInMapsData = [
     data: {
       url: "https://your-tile-server.com/india-water/{z}/{x}/{y}.png", // add correct url here
       attribution: "© Water Sources Data",
+    },
+  },
+  {
+    name: "India-River-Map",
+    type: "image",
+    opacity: 100,
+    data: {
+        url: indiaRiverMap,
+        position: [
+            21.334937371294412,
+            82.917978125
+        ],
+        scale: 202.2,
+        rotation: 0,
+        width: 1450,
+        height: 1536,
     },
   }
 ];

@@ -74,6 +74,10 @@ const MapPage = () => {
       opacity: 100,
     };
 
+    if (mapConfig.opacity){
+      newLayer.opacity = mapConfig.opacity
+    }
+
     updateLayers([newLayer, ...layers]);
     setShowBuiltInDropdown(false);
   };
