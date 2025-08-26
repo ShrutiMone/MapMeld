@@ -15,6 +15,8 @@ const MapPage = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [mapInstance, setMapInstance] = useState(null);
   const [editingImage, setEditingImage] = useState(null);
+  const [baseOpacity, setBaseOpacity] = useState(100); // percentage
+
 
   const [layers, setLayers] = useState(layersData);
 
@@ -150,11 +152,12 @@ const MapPage = () => {
             </div>
           )}
           <div className="h-full bg-gray-300 flex items-center justify-center">
-            <MapVisualization 
-              layers={layers} 
-              onMapReady={handleMapReady} 
+            <MapVisualization
+              layers={layers}
+              onMapReady={handleMapReady}
               editingImage={editingImage}
               updateLayer={updateLayer}
+              baseOpacity={baseOpacity}
             />
           </div>
         </div>
@@ -166,10 +169,13 @@ const MapPage = () => {
           moveLayer={moveLayer}
           setLayerOpacity={setLayerOpacity}
           updateLayer={updateLayer}
-          mapInstance={mapInstance} // Pass map instance
-          editingImage={editingImage} // Add this prop
-          setEditingImage={setEditingImage} // Add this prop
+          mapInstance={mapInstance}
+          editingImage={editingImage}
+          setEditingImage={setEditingImage}
+          baseOpacity={baseOpacity}
+          setBaseOpacity={setBaseOpacity}
         />
+
       </div>
 
       <UploadModal

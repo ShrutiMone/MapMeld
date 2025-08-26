@@ -123,7 +123,7 @@ const ImageAlignmentTool = ({ imageLayer, onUpdate, onClose, map, onInteractiveM
             <input
               type="range"
               min="0.1"
-              max="300"
+              max="400"
               step="0.1"
               value={scale}
               onChange={(e) => handleScaleChange(e.target.value)}

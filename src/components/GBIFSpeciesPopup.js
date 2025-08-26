@@ -8,7 +8,7 @@ const GBIFSpeciesPopup = ({ onClose, onSelectSpecies }) => {
   const [loading, setLoading] = useState(false);
 
   // new: style selector
-  const [style, setStyle] = useState("classic.poly");
+  const [style, setStyle] = useState("");
 
   const searchSpecies = async () => {
     setLoading(true);

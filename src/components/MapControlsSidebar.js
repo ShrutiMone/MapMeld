@@ -19,7 +19,9 @@ const MapControlsSidebar = ({
   updateLayer,
   mapInstance,
   editingImage,
-  setEditingImage, // This is the prop, not a state
+  setEditingImage,
+  baseOpacity,
+  setBaseOpacity
 }) => {
   const [sidebarWidth, setSidebarWidth] = useState(DEFAULT_WIDTH);
   const [showAlert, setShowAlert] = useState(false);
@@ -224,6 +226,37 @@ const MapControlsSidebar = ({
         className="hover:bg-gray-300 transition"
         title="Drag to resize sidebar"
       />
+
+      {/* Base Tile Layer Opacity Control */}
+      <div className="p-3 border-b border-gray-200">
+        <h4 className="text-base font-medium text-gray-700 mb-2">Base Map</h4>
+        <div className="flex items-center space-x-1">
+          <input
+            type="range"
+            min={0}
+            max={100}
+            value={baseOpacity}
+            onChange={(e) => setBaseOpacity(Number(e.target.value))}
+            className="slider-green"
+            style={{ height: "2px" }}
+          />
+          <input
+            type="number"
+            min={0}
+            max={100}
+            value={baseOpacity}
+            onChange={(e) => {
+              let val = Number(e.target.value);
+              if (val < 0) val = 0;
+              if (val > 100) val = 100;
+              setBaseOpacity(val);
+            }}
+            className="w-12 px-1 py-0.5 border border-gray-300 rounded text-center text-xs"
+            style={{ height: "18px" }}
+          />
+          <span className="text-xs text-gray-400">%</span>
+        </div>
+      </div>
 
       {/* Layers fill the rest */}
       <div className="p-3 flex-1 overflow-y-auto min-w-0">

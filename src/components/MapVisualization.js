@@ -65,7 +65,7 @@ function MapInstance({ onMapReady }) {
 
 
 
-const MapVisualization = ({ layers, onMapReady, editingImage, updateLayer  }) => {
+const MapVisualization = ({ layers, onMapReady, editingImage, updateLayer, baseOpacity  }) => {
   console.log("Layers : ", layers);
 
   return (
@@ -87,7 +87,9 @@ const MapVisualization = ({ layers, onMapReady, editingImage, updateLayer  }) =>
         <TileLayer
           attribution='&copy; <a href="https://www.openstreetmap.org/">OpenStreetMap</a>'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+          opacity={baseOpacity / 100}
         />
+
 
         {/* Example: GBIF Basemap (replace above OSM if you want GBIF base) */}
         {/* <TileLayer

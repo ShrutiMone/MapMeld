@@ -1,6 +1,7 @@
 // layersData.js
 
 import indiaRiverMap from "./images/India-River-Map.png"
+import indiaVegetationMap from "./images/India-Vegetation-Map.png"
 
 export const layersData = [
   { 
@@ -156,5 +157,22 @@ export const builtInMapsData = [
         width: 1450,
         height: 1536,
     },
+  },
+  {
+    name: "India-Vegetation-Map",
+    visible: true,
+    type: "image",
+    data: {
+        url: indiaVegetationMap,
+        position: [
+            17.3427177,
+            82.681726
+        ],
+        scale: 343.5,
+        rotation: 0,
+        width: 850,
+        height: 1136
+    },
+    opacity: 100
   }
 ];
