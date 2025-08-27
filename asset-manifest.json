@@ -1,15 +1,15 @@
 {
   "files": {
     "main.css": "/MapMeld/static/css/main.83f8e3e3.css",
-    "main.js": "/MapMeld/static/js/main.51655f78.js",
+    "main.js": "/MapMeld/static/js/main.90fb824c.js",
     "static/media/India-River-Map.png": "/MapMeld/static/media/India-River-Map.e7341bbbe7c0c9ee5813.png",
     "static/media/India-Vegetation-Map.png": "/MapMeld/static/media/India-Vegetation-Map.ce21a33f2f93952ad0f5.png",
     "index.html": "/MapMeld/index.html",
     "main.83f8e3e3.css.map": "/MapMeld/static/css/main.83f8e3e3.css.map",
-    "main.51655f78.js.map": "/MapMeld/static/js/main.51655f78.js.map"
+    "main.90fb824c.js.map": "/MapMeld/static/js/main.90fb824c.js.map"
   },
   "entrypoints": [
     "static/css/main.83f8e3e3.css",
-    "static/js/main.51655f78.js"
+    "static/js/main.90fb824c.js"
   ]
 }
