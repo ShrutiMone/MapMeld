@@ -1,10 +1,21 @@
-# Getting Started with Create React App
+# MapMeld India: Synthesising Spatial Data for Actionable Insights
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+MapMeld is a tool designed for *comparing different types of maps*, like those showing national weather, forest, and species distribution data, which helps to compare various Indian maps by overlaying them.
 
-## Available Scripts
+MapMeld overlays two or more maps such that the user can view all with equal opacity to notice the relative placement of various objects present in all the maps. This can be used for understanding and analysing trends and correlations across several biodiversity factors.
 
-In the project directory, you can run:
+
+## Usage Directions
+
+To access the tool, you can visit [https://shrutimone.github.io/MapMeld](https://shrutimone.github.io/MapMeld)
+
+
+This is the home page of MapMeld - 
+
+![Home Page of MapMeld](readme_files/home_page.png)
+
+
+
 
 ### `npm start`
 
