@@ -9,18 +9,26 @@ import GBIFSpeciesPopup from "../components/GBIFSpeciesPopup";
 import { layersData, builtInMapsData } from "../data/layersData";
 import AlertModal from "../components/AlertModal";
 
-const MapPage = () => {
-  const [showBuiltInDropdown, setShowBuiltInDropdown] = useState(false);
-  const [showUploadModal, setShowUploadModal] = useState(false);
-  const [showGBIFPopup, setShowGBIFPopup] = useState(false);
-  const [showAlert, setShowAlert] = useState(false);
-  const [mapInstance, setMapInstance] = useState(null);
-  const [editingImage, setEditingImage] = useState(null);
-  const [baseOpacity, setBaseOpacity] = useState(100); // percentage
-  const [editingLayer, setEditingLayer] = useState(null);
-
-
-  const [layers, setLayers] = useState(layersData);
+const MapPage = ({
+    showBuiltInDropdown,
+    setShowBuiltInDropdown,
+    showUploadModal,
+    setShowUploadModal,
+    showGBIFPopup,
+    setShowGBIFPopup,
+    showAlert,
+    setShowAlert,
+    mapInstance,
+    setMapInstance,
+    editingImage,
+    setEditingImage,
+    baseOpacity,
+    setBaseOpacity,
+    editingLayer,
+    setEditingLayer,
+    layers,
+    setLayers,
+  }) => {
 
   useEffect(() => {
     const handleImport = (e) => {
