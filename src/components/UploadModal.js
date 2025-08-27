@@ -22,6 +22,18 @@ const UploadModal = ({ show, onClose, onUpload }) => {
     }
   };
 
+  const handleDrop = (event) => {
+    event.preventDefault();
+    const files = event.dataTransfer.files;
+    if (files.length > 0) {
+      handleFileChange({ target: { files } });
+    }
+  };
+
+  const handleDragOver = (event) => {
+    event.preventDefault();
+  };
+
   const handleUpload = () => {
     if (!file) return;
 
@@ -59,7 +71,7 @@ const UploadModal = ({ show, onClose, onUpload }) => {
         data: {
           url: URL.createObjectURL(file),
           position: [20.5937, 78.9629], // Default center of India
-          scale: 1,
+          scale: 10,
           rotation: 0,
           width: this.width,
           height: this.height
@@ -99,7 +111,11 @@ const UploadModal = ({ show, onClose, onUpload }) => {
             Upload File
           </label>
           <div className="flex items-center justify-center w-full">
-            <label className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50">
+            <label
+              className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50"
+              onDragOver={handleDragOver}
+              onDrop={handleDrop}
+            >
               <div className="flex flex-col items-center justify-center pt-5 pb-6">
                 <Upload className="w-8 h-8 mb-3 text-gray-400" />
                 <p className="mb-2 text-sm text-gray-500">

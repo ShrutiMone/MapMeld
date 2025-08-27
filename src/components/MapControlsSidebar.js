@@ -216,17 +216,18 @@ const MapControlsSidebar = ({
       case "image":
         return (
           <svg width="16" height="16" className="mr-2 flex-shrink-0">
-            <rect
-              x="2"
-              y="2"
-              width="12"
-              height="12"
-              fill="white"
-              stroke={color}
-              strokeWidth="1"
-            />
-            <line x1="2" y1="2" x2="14" y2="14" stroke={color} strokeWidth="1" />
-            <line x1="14" y1="2" x2="2" y2="14" stroke={color} strokeWidth="1" />
+          <rect x="1.5" y="1.5" width="13" height="13" stroke="currentColor" strokeWidth="1" fill="none"/>
+          <circle cx="11.5" cy="5" r="1.5" fill="currentColor"/>
+          <path d="M2.5 12L6.5 8L10.5 12H2.5Z" fill="currentColor"/>
+        </svg>
+        );
+      case "tile":
+        return (
+          <svg width="16" height="16" className="mr-2 flex-shrink-0">
+            <ellipse cx="8" cy="3" rx="5" ry="2" stroke="currentColor" strokeWidth="1" fill="none"/>
+            <path d="M3 3v7c0 1.1 2.2 2 5 2s5-0.9 5-2V3" stroke="currentColor" strokeWidth="1" fill="none"/>
+            <path d="M3 7c0 1.1 2.2 2 5 2s5-0.9 5-2" stroke="currentColor" strokeWidth="1" fill="none"/>
+            <path d="M2 12h4v-2l3 3-3 3v-2H2v-2Z" fill="currentColor"/>
           </svg>
         );
       default:

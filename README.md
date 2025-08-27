@@ -26,3 +26,11 @@ Finally, this is the actual map which you can view and control through various f
 
 ![Map View of MapMeld](readme_files/map_view.png)
 
+
+## Running MapMeld yourself
+
+To run the React App locally, follow the following steps -  
+1. Download a copy of MapMeld's source code
+2. Download and install `Node.js` and `npm` from [their website](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm).
+3. In the `/MapMeld` folder (the root directory), run the command `npm run install` on command-line.
+4. Finally, execute the command `npm run start`. This executes the React code, and you will be able to access the website by visiting [http://localhost:3000/#/](http://localhost:3000/#/) on your browser. 

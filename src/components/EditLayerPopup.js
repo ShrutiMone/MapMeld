@@ -260,7 +260,7 @@ const EditLayerPopup = ({ layer, onClose, onUpdateLayer }) => {
         {/* Marker / Polygon / Polyline */}
         {(layerType === "marker" || layerType === "polygon" || layerType === "polyline") && (
           <>
-            <label className="block text-sm font-medium mb-1">{layerType} Coordinates</label>
+            <label className="block text-sm font-medium mb-1">{layerType.charAt(0).toUpperCase() + layerType.slice(1)} Coordinates</label>
             {coords.map((group, gIndex) => (
               <div key={gIndex} className="mb-3 border p-2 rounded">
                 {group.map((c, i) => (
