@@ -4,7 +4,7 @@ import indiaRiverMap from "./images/India-River-Map.png"
 import indiaVegetationMap from "./images/India-Vegetation-Map.png"
 
 export const layersData = [
-  { 
+  /*{ 
     id: 1, 
     name: "Forest Areas", 
     visible: true, 
@@ -104,7 +104,7 @@ export const layersData = [
       values: [85, 65, 45],
     },
     opacity: 100
-  }
+  }*/
 ];
 
 export const builtInMapsData = [

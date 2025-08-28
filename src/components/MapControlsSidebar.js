@@ -293,7 +293,7 @@ const MapControlsSidebar = ({
         </div>
       </div>
 
-      {/* Layers fill the rest */}
+      {/* Layers (scrollable) */}
       <div className="p-3 flex-1 overflow-y-auto min-w-0">
         <h4 className="text-base font-medium text-gray-700 mb-2">Layers</h4>
         <DragDropContext onDragEnd={onDragEnd}>
@@ -429,36 +429,35 @@ const MapControlsSidebar = ({
           </Droppable>
         </DragDropContext>
       </div>
-      
-      {/* Export button at the bottom */}
-      <button
-        className="w-full py-2 px-4 rounded bg-green-600 hover:bg-green-700 text-white font-semibold flex items-center justify-center space-x-2 transition"
-        onClick={() => setShowExportModal(true)}
-      >
-        <Download className="w-4 h-4" />
-        <span>Export</span>
-      </button>
 
+
+      {/* Export button pinned at bottom */}
+      <div className="p-3 border-t border-gray-200 bg-gray-100">
+        <button
+          className="w-full py-2 px-4 rounded bg-green-600 hover:bg-green-700 text-white font-semibold flex items-center justify-center space-x-2 transition"
+          onClick={() => setShowExportModal(true)}
+        >
+          <Download className="w-4 h-4" />
+          <span>Export</span>
+        </button>
+      </div>
+
+      {/* Modals (outside flex) */}
       <ExportModal
         show={showExportModal}
         onClose={() => setShowExportModal(false)}
         onExportImage={handleExportImage}
         onExportMapMeld={handleExportMapMeld}
       />
-      
       <AlertModal
         show={showAlert}
         content="Export functionality coming soon!"
         onClose={() => setShowAlert(false)}
       />
-      
-      {/* Image Alignment Tool Modal */}
       {editingImage && !interactiveMode && (
         <ImageAlignmentTool
           imageLayer={editingImage}
-          onUpdate={(updatedLayer) => {
-            updateLayer(updatedLayer);
-          }}
+          onUpdate={(updatedLayer) => updateLayer(updatedLayer)}
           onClose={() => {
             setEditingImage(null);
             setInteractiveMode(false);
@@ -474,14 +473,10 @@ const MapControlsSidebar = ({
           }}
         />
       )}
-      
-      {/* Interactive Image Alignment Modal */}
       {editingImage && interactiveMode && mapInstance && (
         <InteractiveImageAlignment
           imageLayer={editingImage}
-          onUpdate={(updatedLayer) => {
-            updateLayer(updatedLayer);
-          }}
+          onUpdate={(updatedLayer) => updateLayer(updatedLayer)}
           onClose={() => {
             setEditingImage(null);
             setInteractiveMode(false);
